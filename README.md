@@ -1,2 +1,3 @@
 # CommonLib
-comom lib for java proj
+In this project,I will add some common tool class for Java Project。
+
