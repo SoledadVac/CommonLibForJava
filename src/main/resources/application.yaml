@@ -1,0 +1,8 @@
+server:
+  port: 8089
+
+#Zookeeper 配置
+zookeeper:
+  connectionstrings: 127.0.0.1:2182
+  sessiontimeout: 5000
+
