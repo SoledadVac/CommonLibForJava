@@ -22,6 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<jedis.version>2.1.0</jedis.version>
 	</properties>
 
 	<dependencies>
@@ -57,6 +58,12 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.5.5</version>
+		</dependency>
+		<!--redis的jar包-->
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>${jedis.version}</version>
 		</dependency>
 
 	</dependencies>

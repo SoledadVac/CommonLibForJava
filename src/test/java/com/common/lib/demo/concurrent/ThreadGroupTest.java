@@ -8,7 +8,7 @@ import java.util.concurrent.CountDownLatch;
  * \* Created: liuhuichao
  * \* Date: 2018/6/4
  * \* Time: 下午4:01
- * \* Description:
+ * \* Description: thread group 常用
  * \
  */
 public class ThreadGroupTest {
