@@ -35,7 +35,7 @@ public abstract class AbstractLock implements Lock{
     }
 
     @Override
-    public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
+    public boolean tryLock(long time, TimeUnit unit)  {
         try {
             System.out.println("try--lock");
             return lock(true, time, unit, false);
