@@ -1,10 +1,8 @@
-package com.bj58.pinche.util;
+package com.common.lib.demo.network;
 
-import com.bj58.wf.log.Log;
-import com.bj58.wf.log.LogFactory;
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -18,11 +16,15 @@ import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
+import org.apache.logging.log4j.util.Strings;
 
 import javax.net.ssl.SSLContext;
 import java.security.GeneralSecurityException;
@@ -38,7 +40,6 @@ import java.util.Map;
  */
 public class HttpClientUtil {
   private static CloseableHttpClient httpClient = HttpClientBuilder.create().setMaxConnTotal(500).setMaxConnPerRoute(500).build();
-  private static Log logger = LogFactory.getLog(HttpClientUtil.class);
   private static final CloseableHttpClient HTTP_CLIENT;
   /**
    * 默认超时时间3s
@@ -105,9 +106,9 @@ public class HttpClientUtil {
    */
   public static String post(String url, String requestBody, String encode) throws Exception {
     HttpPost httpPost = new HttpPost(url);
-    if (StringUtils.isNotEmpty(requestBody)) {
+    if (Strings.isNotBlank(requestBody)) {
       StringEntity stringEntity;
-      if (StringUtils.isNotEmpty(encode)) {
+      if (Strings.isNotBlank(encode)) {
         stringEntity = new StringEntity(requestBody, encode);
       } else {
         stringEntity = new StringEntity(requestBody);
@@ -195,17 +196,19 @@ public class HttpClientUtil {
       SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, (a, b) -> true).build();
       sslsf = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
     } catch (GeneralSecurityException e) {
-      logger.error(e.getMessage(), e);
     }
     return sslsf;
   }
 
-  public static String doPost(String url, List<Header> headerlist, Map<String, String> params,Map<String,String> cookies) {
-    if (org.apache.commons.lang3.StringUtils.isBlank(url)) {
-      logger.warn("post url = " + url + " is empty. ignore");
+  public static String doPost(String url, List<Header> headerlist, Map<String, String> params,Map<String,String> cookieMap) {
+    if (Strings.isEmpty(url)) {
       return null;
     } else {
       HttpPost httpPost = null;
+      CookieStore cookieStore = new BasicCookieStore();
+      CloseableHttpClient httpCookieClient = HttpClients.custom()
+              .setDefaultCookieStore(cookieStore)
+              .build();
 
       try {
         httpPost = new HttpPost(url);
@@ -216,6 +219,16 @@ public class HttpClientUtil {
           while(var4.hasNext()) {
             Header header = (Header)var4.next();
             httpPost.addHeader(header);
+          }
+        }
+        //添加cookie
+        if(cookieMap!=null && cookieMap.size()>0){
+          while(cookieMap.entrySet().iterator().hasNext()){
+            Map.Entry<String, String> entry = cookieMap.entrySet().iterator().next();
+            String value = entry.getValue();
+            BasicClientCookie cookie = new BasicClientCookie(entry.getKey(), value);
+            cookie.setVersion(0);
+            cookieStore.addCookie(cookie);
           }
         }
 
@@ -237,14 +250,14 @@ public class HttpClientUtil {
           httpPost.setEntity(new UrlEncodedFormEntity(pairs, "utf-8"));
         }
 
-        CloseableHttpResponse response = httpClient.execute(httpPost);
+        CloseableHttpResponse response = httpCookieClient.execute(httpPost);
         HttpEntity entity = response.getEntity();
         int statusCode = response.getStatusLine().getStatusCode();
         String result = null;
         if (entity != null) {
           result = EntityUtils.toString(entity, "utf-8");
         } else {
-          logger.warn(String.format("Can not get Http Response! url=%s, code=%s", url, statusCode));
+          //logger.warn(String.format("Can not get Http Response! url=%s, code=%s", url, statusCode));
         }
 
         EntityUtils.consume(entity);
@@ -252,7 +265,7 @@ public class HttpClientUtil {
         String var9 = result;
         return var9;
       } catch (Exception var13) {
-        logger.error("doPost, url = " + url, var13);
+        //logger.error("doPost, url = " + url, var13);
       } finally {
         if (httpPost != null) {
           httpPost.releaseConnection();
