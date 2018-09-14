@@ -48,4 +48,23 @@ public class MapProcess {
         System.out.println(result);
     }
 
+    @Test
+    public void summayTest(){
+        Student s1=new Student("a",1);
+        Student s2=new Student("a",3);
+        Student s3=new Student("a",4);
+        Student s4=new Student("a",9);
+        DoubleSummaryStatistics summaryStatistics=Stream.of(s1,s2,s3,s4).collect(Collectors.summarizingDouble(Student::getAge));
+        System.out.println("avg:"+summaryStatistics.getAverage());
+    }
+
+    @Data
+    @AllArgsConstructor
+    class Student{
+        String name;
+        Integer age;
+
+
+    }
+
 }
