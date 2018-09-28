@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
  */
 public class JsoupGetIp {
 
-    private long doGetNum = 1000L; //请求次数
+    private long doGetNum = 100L; //请求次数
     CountDownLatch countDownLatch = new CountDownLatch((int) doGetNum);
     AtomicInteger count = new AtomicInteger(0);
 
@@ -38,7 +38,7 @@ public class JsoupGetIp {
             executorService.execute(() -> {
                 try {
                     visit(visitUrl,ipList);
-                    Thread.sleep(350000);
+                    Thread.sleep(550000);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -58,15 +58,13 @@ public class JsoupGetIp {
     public  Document getDoc(String url) throws Exception {
         RandomGetPostTest.trustAllHttpsCertificates();
         return Jsoup.connect(url)
-                .header("Accept-Language", "zh-CN,zh;q=0.8")//,en-US;q=0.5,en;q=0.3
-                .header("Accept", "application/json")
-                .header("Accept-Encoding", "gzip, deflate")
-                .header("Cache-Control","max-age=0")
+                .header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")//,en-US;q=0.5,en;q=0.3
+                .header("Accept", "*/*")
+                .header("Accept-Encoding", "gzip, deflate, br")
                 .header("Connection","keep-alive")
-                .header("Host", "")
-                .header("Referer","REFERER")
-                .header("Upgrade-Insecure-Requests","1")
                 .header("User-Agent",UserAgentUtils.getRandomUserAgent())
+                .header("Host","my.csdn.net")
+                .header("Referer","https://blog.csdn.net/lhc1105/article/details/81316561")
                 .timeout(5000)
                 .get();
     }
@@ -122,27 +120,13 @@ public class JsoupGetIp {
      * @param ipList
      */
     public  void visit(String url,List<AgencyIp> ipList) throws Exception {
-        int time = 100;
-        for(int i = 0; i< time; i++) {
-            //2.设置ip代理
-            for(final AgencyIp AgencyIp : ipList) {
-                System.setProperty("http.maxRedirects", "50");
-                System.getProperties().setProperty("proxySet", "true");
-                System.getProperties().setProperty("http.proxyHost", AgencyIp.getAddress());
-                System.getProperties().setProperty("http.proxyPort", AgencyIp.getPort());
-
-                try {
-                    Thread.sleep(1000);
-                    Document doc = getDoc(url);
-                    if(doc != null) {
-                        System.out.println("成功刷新次数: " + count.addAndGet(1));
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+        AgencyIp agencyIp=ipList.stream().findAny().orElse(null);
+        if(agencyIp==null){
+            return;
+        }
+        Document doc = getDoc(url);
+        if(doc != null) {
+            System.out.println("成功刷新次数: " + count.addAndGet(1));
         }
         countDownLatch.countDown();
     }
