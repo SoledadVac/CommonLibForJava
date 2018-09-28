@@ -32,7 +32,7 @@ public class JsoupGetIp {
     public void test() throws InterruptedException {
         //1.想http代理地址api发起请求，获得想要的代理ip地址
         final List<AgencyIp> ipList = getForeignIp();
-        String visitUrl="https://blog.csdn.net/lhc1105/article/details/81316561";
+        String visitUrl="https://www.f8dy.tv/"; //渣渣网站随便刷
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
         for (long i = 0; i < doGetNum; i++) {
             executorService.execute(() -> {
@@ -62,9 +62,9 @@ public class JsoupGetIp {
                 .header("Accept-Encoding", "gzip, deflate, br")
                 .header("Connection","keep-alive")
                 .header("User-Agent",UserAgentUtils.getRandomUserAgent())
-                .header("Host","my.csdn.net")
-                .header("Referer","https://blog.csdn.net/lhc1105/article/details/81316561")
-                .header("Upgrade-Insecure-Requests","1")
+                .header("Host","")
+                //.header("Referer","")
+               // .header("Upgrade-Insecure-Requests","1")
                 .get();
     }
 
@@ -127,7 +127,7 @@ public class JsoupGetIp {
         if(doc != null) {
             System.out.println("成功刷新次数: " + count.addAndGet(1));
         }
-        Thread.sleep(60001);
+        //Thread.sleep(60001);
         countDownLatch.countDown();
     }
 
