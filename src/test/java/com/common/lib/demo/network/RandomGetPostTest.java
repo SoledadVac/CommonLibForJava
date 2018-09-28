@@ -11,10 +11,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -72,14 +70,14 @@ public class RandomGetPostTest {
             // 打开和URL之间的连接
             URLConnection connection = realUrl.openConnection();
             // 设置通用的请求属性
-            String ip = reandomIpAddress();
+            String ip = UserAgentUtils.reandomIpAddress();
             //System.out.println("random ip=" + ip);
             connection.setRequestProperty("X-Forwarded-For", ip);
             connection.setRequestProperty("HTTP_X_FORWARDED_FOR", ip);
             connection.setRequestProperty("HTTP_CLIENT_IP", ip);
             connection.setRequestProperty("REMOTE_ADDR", ip);
             connection.setRequestProperty("connection", "Keep-Alive");
-            connection.setRequestProperty("user-agent", getRandomUserAgent());
+            connection.setRequestProperty("user-agent", UserAgentUtils.getRandomUserAgent());
             connection.setRequestProperty("Host", "");
             connection.setRequestProperty("Origin", "ORIGIN");
             connection.setRequestProperty("Accept", "application/json");
@@ -173,7 +171,11 @@ public class RandomGetPostTest {
         return result;
     }
 
-    private void trustAllHttpsCertificates() throws Exception {
+    /**
+     * 信任所有https
+     * @throws Exception
+     */
+    public static void trustAllHttpsCertificates() throws Exception {
         javax.net.ssl.TrustManager[] trustAllCerts = new javax.net.ssl.TrustManager[1];
         javax.net.ssl.TrustManager tm = new miTM();
         trustAllCerts[0] = tm;
@@ -213,35 +215,6 @@ public class RandomGetPostTest {
         }
     }
 
-
-    /**
-     * 获取随机ip
-     *
-     * @return
-     */
-    private String reandomIpAddress() {
-        return new Random().nextInt(254) + "." + new Random().nextInt(254) + "." + new Random().nextInt(254) + "." + new Random().nextInt(254);
-    }
-
-    /**
-     * 随机获取UA
-     *
-     * @return
-     */
-    private String getRandomUserAgent() {
-        List<String> UaList = Arrays.asList("Mozilla/5.0(compatible;MSIE9.0;WindowsNT6.1;Trident/5.0)",
-                "Mozilla/4.0(compatible;MSIE8.0;WindowsNT6.0;Trident/4.0)",
-                "Mozilla/4.0(compatible;MSIE7.0;WindowsNT6.0)",
-                "Opera/9.80(WindowsNT6.1;U;en)Presto/2.8.131Version/11.11",
-                "Mozilla/5.0(WindowsNT6.1;rv:2.0.1)Gecko/20100101Firefox/4.0.1",
-                "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.71 Safari/537.1 LBBROWSER",
-                "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; QQDownload 732; .NET4.0C; .NET4.0E)",
-                "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.84 Safari/535.11 SE 2.X MetaSr 1.0",
-                "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Maxthon/4.4.3.4000 Chrome/30.0.1599.101 Safari/537.36",
-                "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 UBrowser/4.0.3214.0 Safari/537.36"
-        );
-        return UaList.stream().findAny().orElse("");
-    }
 
 
 }

@@ -190,7 +190,7 @@ public class HttpClientUtil {
    *
    * @return SSL
    */
-  private static SSLConnectionSocketFactory createSSLConnSocketFactory() {
+  public static SSLConnectionSocketFactory createSSLConnSocketFactory() {
     SSLConnectionSocketFactory sslsf = null;
     try {
       SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, (a, b) -> true).build();
