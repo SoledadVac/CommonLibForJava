@@ -38,7 +38,6 @@ public class JsoupGetIp {
             executorService.execute(() -> {
                 try {
                     visit(visitUrl,ipList);
-                    Thread.sleep(550000);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -65,7 +64,7 @@ public class JsoupGetIp {
                 .header("User-Agent",UserAgentUtils.getRandomUserAgent())
                 .header("Host","my.csdn.net")
                 .header("Referer","https://blog.csdn.net/lhc1105/article/details/81316561")
-                .timeout(5000)
+                .header("Upgrade-Insecure-Requests","1")
                 .get();
     }
 
@@ -128,6 +127,7 @@ public class JsoupGetIp {
         if(doc != null) {
             System.out.println("成功刷新次数: " + count.addAndGet(1));
         }
+        Thread.sleep(60001);
         countDownLatch.countDown();
     }
 
