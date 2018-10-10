@@ -2,6 +2,8 @@ package com.common.lib.demo.spring.template;
 
 import com.common.lib.demo.spring.SpringContainerSupport;
 import com.google.common.collect.Maps;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
@@ -12,6 +14,7 @@ import java.util.Map;
  * \* Description: 获取处理器的工厂方法
  * \
  */
+@Service
 public class ProcessByEnumFactory extends SpringContainerSupport {
 
     private Map<ProcessEnum, AbsProcessTemplate> processTemplateMap = null;
