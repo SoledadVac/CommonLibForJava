@@ -32,12 +32,12 @@ public class JsoupGetIp {
     public void test() throws InterruptedException {
         //1.想http代理地址api发起请求，获得想要的代理ip地址
         final List<AgencyIp> ipList = getForeignIp();
-        String visitUrl="https://www.f8dy.tv/"; //渣渣网站随便刷
+        String visitUrl = "https://blog.csdn.net/lhc1105/article/details/81316561"; //渣渣网站随便刷
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
         for (long i = 0; i < doGetNum; i++) {
             executorService.execute(() -> {
                 try {
-                    visit(visitUrl,ipList);
+                    visit(visitUrl, ipList);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -50,30 +50,37 @@ public class JsoupGetIp {
 
     /**
      * 模拟浏览器行为的请求头获取Document
+     *
      * @param url
      * @return
      * @throws IOException
      */
-    public  Document getDoc(String url) throws Exception {
+    public Document getDoc(String url) throws Exception {
         RandomGetPostTest.trustAllHttpsCertificates();
+        String ip = UserAgentUtils.reandomIpAddress();
         return Jsoup.connect(url)
+                .header("X-Forwarded-For", ip)
+                .header("HTTP_X_FORWARDED_FOR", ip)
+                .header("HTTP_CLIENT_IP", ip)
+                .header("REMOTE_ADDR", ip)
                 .header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")//,en-US;q=0.5,en;q=0.3
                 .header("Accept", "*/*")
                 .header("Accept-Encoding", "gzip, deflate, br")
-                .header("Connection","keep-alive")
-                .header("User-Agent",UserAgentUtils.getRandomUserAgent())
-                .header("Host","")
-                //.header("Referer","")
-               // .header("Upgrade-Insecure-Requests","1")
+                .header("Connection", "keep-alive")
+                .header("User-Agent", UserAgentUtils.getRandomUserAgent())
+                .header("Host", "")
+                .header("Referer", "https://blog.csdn.net/lhc1105")
+                .header("Upgrade-Insecure-Requests", "1")
                 .get();
     }
 
     /**
      * 获取代理IP地址
+     *
      * @param url
      * @return
      */
-    public  List<AgencyIp> getIp(String url) throws Exception {
+    public List<AgencyIp> getIp(String url) throws Exception {
         List<AgencyIp> ipList = null;
         try {
             //1.向ip代理地址发起get请求，拿到代理的ip
@@ -86,18 +93,18 @@ public class JsoupGetIp {
 
             List<String> ips = new ArrayList<String>();
             String lines[] = ipStr.split("\r\n");
-            for(int i=0; i<lines.length;i++){
+            for (int i = 0; i < lines.length; i++) {
                 //out.println(lines[i]+"<br />");
                 //匹配到ip地址
                 Pattern ipreg = Pattern.compile("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3} \\d{4}");
                 Matcher ip = ipreg.matcher(lines[i]);
-                while(ip.find()){
-                    System.out.println(ip.group().replace(" ",":"));
-                    ips.add(ip.group().replace(" ",":"));
+                while (ip.find()) {
+                    System.out.println(ip.group().replace(" ", ":"));
+                    ips.add(ip.group().replace(" ", ":"));
                 }
             }
             //4.循环遍历得到的ip字符串，封装成AgencyIp的bean
-            for(final String ip : ips) {
+            for (final String ip : ips) {
                 System.out.println(ip);
                 AgencyIp AgencyIp = new AgencyIp();
                 String[] temp = ip.split(":");
@@ -112,52 +119,53 @@ public class JsoupGetIp {
     }
 
 
-
     /**
      * 访问文章
+     *
      * @param url
      * @param ipList
      */
-    public  void visit(String url,List<AgencyIp> ipList) throws Exception {
-        AgencyIp agencyIp=ipList.stream().findAny().orElse(null);
-        if(agencyIp==null){
+    public void visit(String url, List<AgencyIp> ipList) throws Exception {
+        AgencyIp agencyIp = ipList.stream().findAny().orElse(null);
+        if (agencyIp == null) {
             return;
         }
         Document doc = getDoc(url);
-        if(doc != null) {
+        if (doc != null) {
             System.out.println("成功刷新次数: " + count.addAndGet(1));
         }
-        //Thread.sleep(60001);
+        Thread.sleep(30001);
         countDownLatch.countDown();
     }
 
     /**
      * 获取代理IP地址
+     *
      * @param
      * @return
      */
-    public  List<AgencyIp> getForeignIp() {
+    public List<AgencyIp> getForeignIp() {
         List<AgencyIp> ipList = null;
         try {
             //2,将得到的ip地址解析除字符串
-            String ipStr = htmlContent.trim().toString().substring(htmlContent.indexOf("<tbody>"),htmlContent.indexOf("</tbody>"));
+            String ipStr = htmlContent.trim().toString().substring(htmlContent.indexOf("<tbody>"), htmlContent.indexOf("</tbody>"));
             ipList = new ArrayList<AgencyIp>();
             List<String> ips = new ArrayList<String>();
             String lines[] = ipStr.split("</tr>");
-            for(int i=0; i<lines.length;i++){
+            for (int i = 0; i < lines.length; i++) {
                 //匹配到ip地址
                 Pattern ipreg = Pattern.compile("((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.){3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)");
                 Matcher ip = ipreg.matcher(lines[i]);
                 Pattern portreg = Pattern.compile("([0-9]{4})");
                 Matcher port = portreg.matcher(lines[i]);
 
-                if(ip.find()&& port.find()){
-                    ips.add(ip.group()+":"+port.group());
-                    System.out.println(ip.group()+":"+port.group());
+                if (ip.find() && port.find()) {
+                    ips.add(ip.group() + ":" + port.group());
+                    System.out.println(ip.group() + ":" + port.group());
                 }
             }
             //4.循环遍历得到的ip字符串，封装成AgencyIp的bean
-            for(final String ip : ips) {
+            for (final String ip : ips) {
                 System.out.println(ip);
                 AgencyIp AgencyIp = new AgencyIp();
                 String[] temp = ip.split(":");
@@ -172,7 +180,7 @@ public class JsoupGetIp {
     }
 
     //扒取代理ip的内容
-    private  String htmlContent = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+    private String htmlContent = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
             "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
             "<head>\n" +
             "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n" +

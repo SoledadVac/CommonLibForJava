@@ -9,10 +9,10 @@ import java.util.Objects;
  * \* Created: liuhuichao
  * \* Date: 2018/8/6
  * \* Time: 下午12:14
- * \* Description:
+ * \* Description: spring 工具类
  * \
  */
- abstract class SpringContainerUtils {
+abstract class SpringContainerUtils {
     public SpringContainerUtils() {
     }
 
@@ -21,7 +21,7 @@ import java.util.Objects;
             throw new IllegalArgumentException("BeanFactory is required");
         } else {
             Objects.requireNonNull(beanClass, "BeanClass must not be null");
-            BeanFactory factory = (BeanFactory)beanFactory;
+            BeanFactory factory = (BeanFactory) beanFactory;
 
             try {
                 return factory.getBean(beanClass) != null;

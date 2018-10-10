@@ -82,7 +82,7 @@ public class RandomGetPostTest {
             connection.setRequestProperty("Origin", "ORIGIN");
             connection.setRequestProperty("Accept", "application/json");
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            connection.setRequestProperty("Referer", "REFERER");
+            connection.setRequestProperty("Referer", "https://blog.csdn.net/lhc1105");
             connection.setRequestProperty("Accept-Encoding", "gzip, deflate");
             connection.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6,ja;q=0.4,pt;q=0.2");
             // 建立实际的连接
