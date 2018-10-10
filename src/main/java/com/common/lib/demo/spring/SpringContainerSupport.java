@@ -1,11 +1,10 @@
 package com.common.lib.demo.spring;
 
-import org.slf4j.Logger;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ApplicationObjectSupport;
-import org.springframework.core.convert.ConversionService;
 
 /**
  * \* Created: liuhuichao

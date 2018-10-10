@@ -1,5 +1,6 @@
-package com.common.lib.demo.spring;
+package com.common.lib.demo.spring.template;
 
+import com.common.lib.demo.spring.SpringContainerSupport;
 import com.google.common.collect.Maps;
 
 import java.util.Map;

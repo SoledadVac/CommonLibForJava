@@ -1,4 +1,4 @@
-package com.common.lib.demo.spring;
+package com.common.lib.demo.spring.template;
 
 import lombok.Getter;
 import lombok.Setter;
