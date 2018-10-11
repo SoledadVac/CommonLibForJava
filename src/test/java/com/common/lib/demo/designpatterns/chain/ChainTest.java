@@ -32,5 +32,8 @@ public class ChainTest {
         dataContext.setId(1000L);
         dataContext.setName("水田");
         processor.process(dataContext);
+        if(dataContext.isSucceed){
+            //处理成功，巴拉巴拉。。。
+        }
     }
 }
