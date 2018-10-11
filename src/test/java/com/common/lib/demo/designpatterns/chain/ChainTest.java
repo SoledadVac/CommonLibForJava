@@ -23,6 +23,11 @@ public class ChainTest {
 
     @Test
     public void chainTest(){
+        /**
+         * 注：在写业务逻辑的时候，可以先构造数据上下文（数据上下文包含需要），
+         * 之后将真个业务逻辑根据用途拆分成处理类，
+         * 按照顺序放在注解里面(注解里面类放置的顺序就是处理顺序)
+         * **/
         OffDutyTemplateContext dataContext=new OffDutyTemplateContext();
         dataContext.setId(1000L);
         dataContext.setName("水田");
