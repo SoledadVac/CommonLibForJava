@@ -30,8 +30,8 @@ public class TemplateFactoryTest {
         Map<String, String> data = Maps.newHashMap();
         data.put("aa", "foo");
         processContext.setDemoDataMap(data);
-
-        AbsProcessTemplate oneTemplate = processByEnumFactory.getProcessTemple(ProcessEnum.PROCESS_TYPE_ONE);
+        processContext.setProcessEnum(ProcessEnum.PROCESS_TYPE_ONE);
+        AbsProcessTemplate oneTemplate = processByEnumFactory.getProcessTemple(processContext.getProcessEnum());
         oneTemplate.processDataByType(processContext);
 
     }
