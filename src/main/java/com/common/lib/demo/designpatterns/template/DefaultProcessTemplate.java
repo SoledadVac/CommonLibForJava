@@ -1,4 +1,4 @@
-package com.common.lib.demo.spring.template;
+package com.common.lib.demo.designpatterns.template;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Service;
@@ -6,16 +6,15 @@ import org.springframework.stereotype.Service;
 /**
  * \* Created: liuhuichao
  * \* Date: 2018/10/10
- * \* Time: 下午5:02
+ * \* Time: 下午5:04
  * \* Description:
  * \
  */
 @Service
-public class DemoOneProcessTemplate extends AbsProcessTemplate {
-
+public class DefaultProcessTemplate extends AbsProcessTemplate {
     @Override
     public ProcessEnum getProcessEnum() {
-        return ProcessEnum.PROCESS_TYPE_ONE;
+        return ProcessEnum.DEFAULT;
     }
 
     @Override

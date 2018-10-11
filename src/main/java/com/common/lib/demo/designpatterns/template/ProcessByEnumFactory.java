@@ -1,8 +1,7 @@
-package com.common.lib.demo.spring.template;
+package com.common.lib.demo.designpatterns.template;
 
 import com.common.lib.demo.spring.SpringContainerSupport;
 import com.google.common.collect.Maps;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

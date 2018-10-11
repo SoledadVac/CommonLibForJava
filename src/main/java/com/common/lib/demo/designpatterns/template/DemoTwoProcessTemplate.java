@@ -1,4 +1,4 @@
-package com.common.lib.demo.spring.template;
+package com.common.lib.demo.designpatterns.template;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Service;

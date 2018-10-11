@@ -1,4 +1,4 @@
-package com.common.lib.demo.spring.template;
+package com.common.lib.demo.designpatterns.template;
 
 /**
  * \* Created: liuhuichao
