@@ -14,7 +14,7 @@ import java.util.Objects;
  * \* Description: abs 处理链
  * \
  */
-public abstract class AbsProcessor<E extends ITemplateContext> extends SpringContainerSupport {
+public abstract class AbsProcessor<E extends AbsTemplateContext> extends SpringContainerSupport {
 
     private final List<ITemplateTask> tasks = new LinkedList<>();
 
@@ -39,6 +39,7 @@ public abstract class AbsProcessor<E extends ITemplateContext> extends SpringCon
 
     /**
      * 处理数据过程
+     *
      * @param context
      * @return
      */
@@ -46,8 +47,12 @@ public abstract class AbsProcessor<E extends ITemplateContext> extends SpringCon
         if (context == null) {
             return null;
         }
-        for(ITemplateTask task : tasks){
+        for (ITemplateTask task : tasks) {
             task.execute(context);
+            /**判断每个处理链是否成功，不成功下面的就不执行了**/
+            if (!context.isSucceed()) {
+                break;
+            }
         }
         return context;
     }

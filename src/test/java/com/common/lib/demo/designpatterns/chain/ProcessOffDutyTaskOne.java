@@ -11,9 +11,10 @@ import org.springframework.stereotype.Service;
  * \
  */
 @Service
-public class ProcessOffDutyTaskOne implements ITemplateTask<OffDutyTemplateContext>{
+public class ProcessOffDutyTaskOne implements ITemplateTask<OffDutyTemplateContext> {
     @Override
     public void execute(OffDutyTemplateContext context) {
+        context.setSucceed(true); //设置处理情况标记
         System.out.println("ProcessOffDutyTaskOne");
         System.out.println(JSONObject.toJSONString(context));
     }

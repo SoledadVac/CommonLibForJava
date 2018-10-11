@@ -12,7 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class OffDutyTemplateContext implements ITemplateContext {
+public class OffDutyTemplateContext extends AbsTemplateContext {
     private Long id;
     private String name;
     //and so on....
