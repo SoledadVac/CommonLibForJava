@@ -1,7 +1,5 @@
 package com.common.lib.demo.designpatterns.chain;
 
-import org.junit.Before;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,9 +11,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @ChainTasks({
-        ProcessOffDutyTaskOne.class,
-        ProcessOffDutyTaskTwo.class,
-        ProcessOffDutyTaskThree.class
+        StepOneCheckData.class,
+        StepTwoProcessData.class,
+        StepThreeProcessData.class
 })
 public class OffDutyTaskOffDutyProcessor extends AbsProcessor<OffDutyTemplateContext>{
 
