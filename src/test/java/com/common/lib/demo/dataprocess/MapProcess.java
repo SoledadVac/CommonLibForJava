@@ -67,4 +67,19 @@ public class MapProcess {
 
     }
 
+
+    @Test
+    public  void testCompute(){
+        Map<String, List<String>> data = new LinkedHashMap<>();
+        data.computeIfAbsent("a",k->new ArrayList<>()).add("a");
+        data.computeIfAbsent("a",k->new ArrayList<>()).add("b");
+        System.out.println(data);
+    }
+
+    @Test
+    public void test(){
+
+    }
+
+
 }
