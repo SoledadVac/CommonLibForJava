@@ -1,6 +1,7 @@
-package com.common.lib.demo.concurrent;
+package com.common.lib.demo.concurrent.atomic;
 
 import com.alibaba.fastjson.JSONObject;
+import com.common.lib.demo.concurrent.Person;
 import org.junit.Before;
 import org.junit.Test;
 
