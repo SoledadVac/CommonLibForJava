@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicStampedReference;
 
 /**
  * \* Created: liuhuichao
@@ -20,7 +21,6 @@ public class AtomicTest {
 
     private AtomicReference<Person> personReference = new AtomicReference<>(person);
 
-    private AtomicInteger atomicInteger = new AtomicInteger(100);
 
 
     @Test
@@ -75,6 +75,8 @@ public class AtomicTest {
         t5.join();
         System.out.println(JSONObject.toJSONString(personReference.get()));
     }
+
+
 
 
 }
