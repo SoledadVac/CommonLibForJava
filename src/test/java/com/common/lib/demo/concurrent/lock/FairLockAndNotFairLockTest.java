@@ -19,7 +19,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * \* Description:
  * \
  */
-public class LockTest {
+public class FairLockAndNotFairLockTest {
 
     /**
      * 正确加锁解锁的方式
