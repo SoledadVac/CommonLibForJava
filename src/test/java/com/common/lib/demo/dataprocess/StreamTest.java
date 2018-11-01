@@ -1,4 +1,4 @@
-package com.common.lib.demo.concurrent;
+package com.common.lib.demo.dataprocess;
 
 import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;

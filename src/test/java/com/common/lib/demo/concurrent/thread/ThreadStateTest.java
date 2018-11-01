@@ -1,4 +1,4 @@
-package com.common.lib.demo.concurrent;
+package com.common.lib.demo.concurrent.thread;
 
 
 import java.lang.management.ManagementFactory;

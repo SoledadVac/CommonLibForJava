@@ -1,4 +1,4 @@
-package com.common.lib.demo.concurrent;
+package com.common.lib.demo.concurrent.thread;
 
 import com.common.lib.demo.redis.utils.RedisUtil;
 import org.junit.Test;
