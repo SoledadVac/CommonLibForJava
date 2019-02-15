@@ -1,6 +1,10 @@
 package com.common.lib.demo.dataprocess;
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import org.assertj.core.util.Lists;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -76,9 +80,9 @@ public class StreamTest {
 
         //peek:真正访问每个元素时候会调用，可以用于调试时候使用
         Object[] powers = Stream.iterate(1.0, p -> p * 2)
-                                .peek(e -> System.out.println("fetch" + e))
-                                .limit(20)
-                                .toArray();
+                .peek(e -> System.out.println("fetch" + e))
+                .limit(20)
+                .toArray();
         //System.out.println(JSONObject.toJSONString(powers));
     }
 
@@ -86,8 +90,8 @@ public class StreamTest {
      * distinct stream
      */
     @Test
-    public void distinctTest(){
-        Stream<String>  wordStream=Stream.of("aa","cc","aa","bb","bb","cc","cc").distinct();
+    public void distinctTest() {
+        Stream<String> wordStream = Stream.of("aa", "cc", "aa", "bb", "bb", "cc", "cc").distinct();
         System.out.println(wordStream.collect(Collectors.toList()));
     }
 
@@ -95,26 +99,41 @@ public class StreamTest {
      * count,min,max --stream
      */
     @Test
-    public void aggragateTest(){
-        Stream<String>  wordStream=Stream.of("aa","cc","aa","bb","bb","cc","cc");
+    public void aggragateTest() {
+        Stream<String> wordStream = Stream.of("aa", "cc", "aa", "bb", "bb", "cc", "cc");
         //count
-       // System.out.println(wordStream.count());
+        // System.out.println(wordStream.count());
 
         //max
-        Stream<Integer> intStream=Stream.of(1,2,3);
+        Stream<Integer> intStream = Stream.of(1, 2, 3);
         //Optional<Integer> max=intStream.max(Integer::compareTo);
         //System.out.println(max.get());
 
         //min
-        Optional<Integer> min=intStream.min(Integer::compareTo);
+        Optional<Integer> min = intStream.min(Integer::compareTo);
         System.out.println(min.get());
     }
 
 
     @Test
-    public void optionalTest(){
+    public void allMatchTest() {
+        List<User> users = Lists.newArrayList();
+        users.add(new User("1", false));
+        users.add(new User("2", false));
+        users.add(new User("3", false));
+        users.add(new User("4", false));
+        users.add(new User("5", false));
+        users.add(new User("6", false));
+        boolean flag = users.stream().filter(User::isFlag).allMatch(User::isFlag);
+        System.out.println("flag=" + flag);  //总返回true
+    }
 
-
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    class User {
+        private String name;
+        private boolean flag;
     }
 
 }

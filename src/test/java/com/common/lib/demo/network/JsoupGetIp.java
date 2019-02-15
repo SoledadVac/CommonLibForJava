@@ -24,20 +24,20 @@ import java.util.regex.Pattern;
  */
 public class JsoupGetIp {
 
-    private long doGetNum = 100L; //请求次数
+    private long doGetNum = 2L; //请求次数
     CountDownLatch countDownLatch = new CountDownLatch((int) doGetNum);
     AtomicInteger count = new AtomicInteger(0);
 
     @Test
     public void test() throws InterruptedException {
         //1.想http代理地址api发起请求，获得想要的代理ip地址
-        final List<AgencyIp> ipList = getForeignIp();
-        String visitUrl = "https://blog.csdn.net/lhc1105/article/details/81316561"; //渣渣网站随便刷
+       // final List<AgencyIp> ipList = getForeignIp();
+        String visitUrl = "https://www.jianshu.com/p/07557ca424b0"; //渣渣网站随便刷
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
         for (long i = 0; i < doGetNum; i++) {
             executorService.execute(() -> {
                 try {
-                    visit(visitUrl, ipList);
+                    visit(visitUrl, null);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -45,6 +45,21 @@ public class JsoupGetIp {
         }
         countDownLatch.await();
         System.out.println("done---");
+    }
+
+    @Test
+    public void getJianShu() throws Exception{
+        String visitUrl = "https://www.jianshu.com/p/07557ca424b0"; //渣渣网站随便刷
+        for (long i = 0; i < doGetNum; i++) {
+            try {
+                HttpClientUtil.get(visitUrl);
+                Thread.sleep(5000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("done---");
+
     }
 
 
@@ -69,7 +84,7 @@ public class JsoupGetIp {
                 .header("Connection", "keep-alive")
                 .header("User-Agent", UserAgentUtils.getRandomUserAgent())
                 .header("Host", "")
-                .header("Referer", "https://blog.csdn.net/lhc1105")
+                .header("Referer", "https://www.jianshu.com")
                 .header("Upgrade-Insecure-Requests", "1")
                 .get();
     }
@@ -126,10 +141,10 @@ public class JsoupGetIp {
      * @param ipList
      */
     public void visit(String url, List<AgencyIp> ipList) throws Exception {
-        AgencyIp agencyIp = ipList.stream().findAny().orElse(null);
+       /* AgencyIp agencyIp = ipList.stream().findAny().orElse(null);
         if (agencyIp == null) {
             return;
-        }
+        }*/
         Document doc = getDoc(url);
         if (doc != null) {
             System.out.println("成功刷新次数: " + count.addAndGet(1));

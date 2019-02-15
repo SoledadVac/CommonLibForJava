@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
  */
 public class RandomGetPostTest {
 
-    private long doGetNum = 1; //请求次数
+    private long doGetNum = 100; //请求次数
     CountDownLatch countDownLatch = new CountDownLatch((int) doGetNum);
 
     @Test
