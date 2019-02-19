@@ -78,12 +78,26 @@ public class A4_MediaOfTwoSortedArrays {
         }
     }
 
+    /**
+     * 减小程序的时间复杂度
+     *
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public double findMedianSortedArrays1(int[] nums1, int[] nums2) {
+
+        //todo :时间复杂度没有达到
+
+        return 0;
+    }
+
     @Test
     public void test() {
-       /* int[] nums1 = {1, 2, 4};
-        int[] nums2 = {3, 11, 12};*/
-        int[] nums1 = {1};
-        int[] nums2 = {1};
+        int[] nums1 = {1, 2, 4};
+        int[] nums2 = {3, 11, 12};
+       /* int[] nums1 = {1};
+        int[] nums2 = {1};*/
         double result = findMedianSortedArrays(nums1, nums2);
         System.out.println("result = " + result);
     }
