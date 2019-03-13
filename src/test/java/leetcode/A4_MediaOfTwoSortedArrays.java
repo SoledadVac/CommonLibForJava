@@ -1,5 +1,6 @@
 package leetcode;
 
+import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 
 /**
@@ -79,15 +80,82 @@ public class A4_MediaOfTwoSortedArrays {
     }
 
     /**
+     * 获取数组的中位数
+     *
+     * @param num
+     * @return
+     */
+    private double findMidNum(int[] num) {
+        int length = num.length;
+        if (length == 0) {
+            return 0;
+        }
+        if (length % 2 == 0) {
+            //总长度为偶数个
+            int t1 = num[length / 2];
+            int t2 = num[length / 2 - 1];
+            return (t1 + t2) / 2.0;
+        } else {
+            //总长度为奇数个
+            return num[length / 2];
+        }
+    }
+
+    private double findMidNumAdd(int[] num, int length) {
+        if (length % 2 == 0) {
+            // 1   //   2,3,4
+            //总长度为偶数个
+            int t1 = num[length / 2 - 1];
+            int t2 = num[length / 2];
+            return (t1 + t2) / 2.0;
+        } else {
+            // 1   //   2,3,4,5
+            //总长度为奇数个
+            return num[length / 2];
+        }
+    }
+
+    private int[] getNumBetween(int[] num, int begin, int end) {
+        if (begin == 0 && end == 0) {
+            return num;
+        }
+        int[] newNum = new int[end - begin + 1];
+        int j = 0;
+        for (int i = begin; i <= end; i++) {
+            newNum[j++] = num[i];
+        }
+        return newNum;
+    }
+
+    /**
      * 减小程序的时间复杂度
+     * --------折半查找中位数
+     * <p>
+     * A：{11}
+     * B：{6}
      *
      * @param nums1
      * @param nums2
      * @return
      */
     public double findMedianSortedArrays1(int[] nums1, int[] nums2) {
+        int totalLength = nums1.length + nums2.length;
+        int[] temp;
+        //保持num2长度较长
+        if (nums1.length > nums2.length) {
+            temp = nums1;
+            nums1 = nums2;
+            nums2 = temp;
+        }
+        //如果是偶数，留下了两位
+        for (int i = 0; i < nums1.length; i++) {
 
-        //todo :时间复杂度没有达到
+
+        }
+
+
+        //如果是奇数，留下了一位
+
 
         return 0;
     }
@@ -96,9 +164,8 @@ public class A4_MediaOfTwoSortedArrays {
     public void test() {
         int[] nums1 = {1, 2, 4};
         int[] nums2 = {3, 11, 12};
-       /* int[] nums1 = {1};
-        int[] nums2 = {1};*/
-        double result = findMedianSortedArrays(nums1, nums2);
+        double result = findMedianSortedArrays1(nums1, nums2);
         System.out.println("result = " + result);
     }
+
 }
