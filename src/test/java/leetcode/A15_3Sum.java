@@ -32,7 +32,7 @@ public class A15_3Sum {
 
     /**
      * 暴力方法
-     * --击败了百分之零的用户
+     * --击败了百分之零的用户,e,代码写的有点儿烂了
      *
      * @param nums
      * @return
