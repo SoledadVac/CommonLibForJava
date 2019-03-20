@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * \* Created: liuhuichao
@@ -134,5 +136,120 @@ public class ArrayTest {
         int data[] = {9, 9, 9, 9};
         System.out.println(JSONObject.toJSONString(plusOne(data)));
     }
+
+    /**
+     * 给定一个含有 M x N 个元素的矩阵（M 行，N 列），请以对角线遍历的顺序返回这个矩阵中的所有元素，对角线遍历如下图所示。
+     * <p>
+     * 输入:
+     * [
+     * [ 1(0,0), 2(0,1), 3(0,2) ],
+     * [ 4(1,0), 5(1,1), 6(1,2) ],
+     * [ 7(2,0), 8(2,1), 9(2,2) ]
+     * ]
+     * <p>
+     * 输出:  [1,2,4,7,5,3,6,8,9]
+     *
+     * @param matrix
+     * @return
+     */
+    public int[] findDiagonalOrder(int[][] matrix) {
+        if (matrix.length == 0) {
+            return new int[0];
+        }
+        int row = matrix.length;
+        int col = matrix[0].length;
+        int totalNum = row * col;
+        if (totalNum == 1) {
+            return new int[]{matrix[0][0]};
+        }
+        int result[] = new int[totalNum];
+        int currentRow = 0;
+        int currentCol = 0;
+        int currentIndex = 0; //标记结果数组中当前放置数据的位置
+        //奇数坐标向左下遍历，偶数坐标向右上遍历
+        while (currentCol < col && currentRow < row) {
+            result[currentIndex] = matrix[currentRow][currentCol];
+            if ((currentCol + currentRow) % 2 == 0) {
+                //偶数
+                if (currentCol == col - 1) {
+                    currentRow++;
+                } else if (currentRow - 1 < 0) {
+                    currentCol++;
+                } else {
+                    currentRow--;
+                    currentCol++;
+                }
+
+            } else {
+                //奇数坐标
+                if (currentRow == row - 1) {
+                    currentCol++;
+                } else if (currentCol - 1 < 0) {
+                    currentRow++;
+                } else {
+                    currentRow++;
+                    currentCol--;
+                }
+            }
+            currentIndex++;
+        }
+        return result;
+    }
+
+    @Test
+    public void findDiagonalOrderTest() {
+        int[][] matrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        System.out.println(JSONObject.toJSONString(findDiagonalOrder(matrix)));
+    }
+
+    /**
+     * 给定一个包含 m x n 个元素的矩阵（m 行, n 列），请按照顺时针螺旋顺序，返回矩阵中的所有元素。
+     * 输入:
+     * [
+     * [ 1(0,0), 2(0,1), 3(0,2) ],
+     * [ 4(1,0), 5(1,1), 6(1,2) ],
+     * [ 7(2,0), 8(2,1), 9(2,2) ]
+     * ]
+     * <p>
+     * 输出:  [1,2,3,6,9,8,7,4,5]
+     *
+     * @param matrix
+     * @return
+     */
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> result = new ArrayList<>();
+        if (matrix.length == 0) {
+            return result;
+        }
+        int row = matrix.length;
+        int col = matrix[0].length;
+        int totalNum = row * col;
+        if (totalNum == 1) {
+            result.add(matrix[0][0]);
+            return result;
+        }
+        int currentRow = 0;
+        int currentCol = 0;
+        while (currentCol < col && currentRow < row) {
+
+            //向右（x,0）-> (x,col-1)
+            
+
+            //向下 (0,y) -> (row-1,y)
+
+            //向左
+
+            //向上
+
+        }
+        return result;
+    }
+
+    @Test
+    public void spiralOrderTest() {
+        int[][] matrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        System.out.println(JSONObject.toJSONString(spiralOrder(matrix)));
+    }
+
 
 }
