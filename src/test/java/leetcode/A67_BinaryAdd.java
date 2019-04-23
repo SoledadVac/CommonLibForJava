@@ -37,7 +37,7 @@ public class A67_BinaryAdd {
             }
             if (item >= 2) {
                 result.append(item % 2);
-                jinWei = 1;
+                jinWei = item / 2;
             } else {
                 jinWei = 0;
                 result.append(item);
