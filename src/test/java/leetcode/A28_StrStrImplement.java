@@ -31,7 +31,7 @@ import java.util.Map;
  */
 public class A28_StrStrImplement {
 
-    //先写个复杂度为N方的
+    //先写个复杂度为N方的 ： 击败了百分之七。艾玛。。
     public int strStr(String haystack, String needle) {
         if (haystack.length() < needle.length()) {
             return -1;
@@ -67,10 +67,45 @@ public class A28_StrStrImplement {
         return true;
     }
 
+    //再写个双指针的吧，艾玛，上面那个时间复杂度太高了 : 超过百分之八十二点六，完美
+    public int strStr1(String haystack, String needle) {
+        if (haystack.length() < needle.length()) {
+            return -1;
+        }
+        if ("".equals(haystack) && "".equals(needle)) {
+            return 0;
+        }
+        if (haystack == null || haystack.length() < 1) {
+            return -1;
+        }
+        if (needle == null || needle.length() < 1) {
+            return 0;
+        }
+        char[] haystackChar = haystack.toCharArray();
+        char[] needleChar = needle.toCharArray();
+        int begin = 0;
+        int indexHaystack = 0;
+        int indexNeedle = 0;
+        while (indexHaystack != haystackChar.length && indexNeedle != needleChar.length) {
+            if (haystackChar[indexHaystack] == needleChar[indexNeedle]) {
+                if (indexNeedle == needleChar.length - 1) {
+                    return indexHaystack - needleChar.length + 1;
+                }
+                indexHaystack++;
+                indexNeedle++;
+            } else {
+                begin++;
+                indexHaystack = begin;
+                indexNeedle = 0;
+            }
+        }
+        return -1;
+    }
+
 
     @Test
     public void test() {
-        int result = strStr("mississippi", "issipi");
+        int result = strStr1("mississippi", "issip"); //4
         System.out.println("result= " + result);
     }
 
