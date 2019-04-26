@@ -125,6 +125,25 @@ public class A26_RemoveDuplicatesFromSortedArray {
     }
 
     /**
+     * 官方解法，发现我的代码写的太复杂了，艾玛。。。
+     *
+     * @param nums
+     * @return
+     */
+    public int removeDuplicates1(int[] nums) {
+        if (nums.length == 0) return 0;
+        int i = 0;
+        for (int j = 1; j < nums.length; j++) {
+            if (nums[j] != nums[i]) {
+                i++;
+                nums[i] = nums[j];
+            }
+        }
+        return i + 1;
+    }
+
+
+    /**
      * 数组本身的平移
      *
      * @param nums             源数组
@@ -151,7 +170,7 @@ public class A26_RemoveDuplicatesFromSortedArray {
     @Test
     public void test() {
         int[] nums = {0, 0, 0, 1, 1, 2, 2, 3, 3, 4}; //5 //0, 0, 0, 1, 1, 2, 2, 3, 3, 4
-        System.out.println("result = " + removeDuplicates0(nums));
+        System.out.println("result = " + removeDuplicates1(nums));
         System.out.println("result = " + JSONObject.toJSONString(nums));
     }
 }
