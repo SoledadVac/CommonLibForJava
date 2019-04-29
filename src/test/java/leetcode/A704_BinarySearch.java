@@ -66,11 +66,39 @@ public class A704_BinarySearch {
         return -1;
     }
 
+    /**
+     * 官方模板，，emmm,比我写的代码少点儿
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    int binarySearch(int[] nums, int target) {
+        if (nums == null || nums.length == 0)
+            return -1;
+
+        int left = 0, right = nums.length - 1;
+        while (left <= right) {
+            // Prevent (left + right) overflow
+            int mid = left + (right - left) / 2; //感觉没啥用
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        // End Condition: left > right
+        return -1;
+    }
+
 
     @Test
     public void test() {
-        int nums[] = {2, 5};
-        System.out.println("result = " + search(nums, 5));
+        int nums[] = {-1, 0, 3, 5, 9, 12};
+        System.out.println("result = " + binarySearch(nums, 5));
     }
 
 }
