@@ -32,6 +32,47 @@ import java.util.Arrays;
  */
 public class A33_SearchInRotatedSortedArray {
 
+
+    public int search0(int[] nums, int target) {
+        if (nums.length == 0) {
+            return -1;
+        }
+        //每次对排好序的一端进行二分，二分，再二分。。。
+        return searchBetween(nums, 0, nums.length - 1, target);
+    }
+
+    int searchBetween(int[] nums, int low, int high, int target) {
+        //fk,有个边界值老是调用溢出，烦死人了，艾玛
+        if (low > high) {
+            return -1;
+        }
+        int mid = low + (high - low) / 2;
+        if (nums[mid] == target) {
+            return mid;
+        }
+        //判断哪一边是排好序的  low---mid---high
+        if (nums[low] < nums[mid]) {
+            //左边是排好序的，则针对左边进行二分查找
+            if (nums[low] >= target && nums[mid] < target) {
+                return searchBetween(nums, low, mid - 1, target);
+            } else {
+                return searchBetween(nums, mid + 1, high, target);
+            }
+        } else if (nums[low] > nums[mid]) {
+            //右边是排好序的，针对右边进行二分查找
+            if (nums[mid] < target && nums[high] >= target) {
+                //在右边区间内
+                return searchBetween(nums, mid + 1, high, target);
+            } else {
+                return searchBetween(nums, low, mid - 1, target);
+            }
+        } else {
+            low++;
+            return searchBetween(nums, low, high, target);
+        }
+    }
+
+
     /**
      * 1、一定有一端是排好序的（不是左端就是右端），因为旋转数组只有一个转折点
      * 2、没有排好序的那一端：
@@ -93,6 +134,6 @@ public class A33_SearchInRotatedSortedArray {
     public void test() {
         int[] nums = {3, 1};
         int target = 1;
-        System.out.println("result = " + search(nums, target));
+        System.out.println("result = " + search0(nums, target));
     }
 }
