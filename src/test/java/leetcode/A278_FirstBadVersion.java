@@ -76,6 +76,20 @@ public class A278_FirstBadVersion {
         return 1;
     }
 
+    public int firstBadVersion0(int n) {
+        int left = 1;
+        int right = n;
+        while (right >= left) {
+            int mid = left + (right - left) / 2;
+            if (isBadVersion(mid)) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+
     boolean isBadVersion(int n) {
         return n >= 2147483647;
     }
@@ -83,6 +97,6 @@ public class A278_FirstBadVersion {
     @Test
     public void test() {
         int n = 2147483647;  // 2126753390
-        System.out.println("result = " + firstBadVersion(n));
+        System.out.println("result = " + firstBadVersion0(n));
     }
 }
