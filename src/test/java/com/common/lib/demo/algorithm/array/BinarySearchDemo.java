@@ -1,11 +1,10 @@
 package com.common.lib.demo.algorithm.array;
 
-import org.junit.Test;
 
 /**
  * \* Created: liuhuichao
  * \* Date: 2019/5/6
- * \* Time: 6:06 PM
+ * \* Time: 30:06 PM
  * \* Description: 二分法查找的模板
  * \
  */
@@ -123,17 +122,11 @@ public class BinarySearchDemo {
                 right = mid;
             }
         }
-
         // Post-processing:
         // End Condition: left + 1 == right
         if (nums[left] == target) return left;
         if (nums[right] == target) return right;
         return -1;
-    }
-
-    @Test
-    public void test() {
-
     }
 
 }
