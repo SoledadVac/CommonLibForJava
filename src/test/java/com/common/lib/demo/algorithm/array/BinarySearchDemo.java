@@ -26,7 +26,7 @@ public class BinarySearchDemo {
      * @param target
      * @return
      */
-    int binarySearch1(int[] nums, int target) {
+    public static int binarySearch1(int[] nums, int target) {
         if (nums == null || nums.length == 0)
             return -1;
 
@@ -65,7 +65,7 @@ public class BinarySearchDemo {
      * @param target
      * @return
      */
-    int binarySearch2(int[] nums, int target) {
+    public static int binarySearch2(int[] nums, int target) {
         if (nums == null || nums.length == 0)
             return -1;
 
@@ -106,7 +106,7 @@ public class BinarySearchDemo {
      * @param target
      * @return
      */
-    int binarySearch3(int[] nums, int target) {
+    public static int binarySearch3(int[] nums, int target) {
         if (nums == null || nums.length == 0)
             return -1;
         //left---mid ----target
