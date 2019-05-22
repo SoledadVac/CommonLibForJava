@@ -131,41 +131,58 @@ public class A4_MediaOfTwoSortedArrays {
      * 减小程序的时间复杂度
      * --------折半查找中位数
      * <p>
-     * A：{11}
-     * B：{6}
+     * <p>
+     * A：{1，2，4}
+     * B：{3，11，12}
+     * <p>
+     * A：{1，6}
+     * B：{3，4，5}
+     * <p>
+     * A：{1，2，3}
+     * B：{4，5，6}
+     * <p>
+     * <p>
+     * left_part          |        right_part
+     * A[0], A[1], ..., A[i-1]  |  A[i], A[i+1], ..., A[m-1]
+     * B[0], B[1], ..., B[j-1]  |  B[j], B[j+1], ..., B[n-1]
      *
      * @param nums1
      * @param nums2
      * @return
      */
     public double findMedianSortedArrays1(int[] nums1, int[] nums2) {
-        int totalLength = nums1.length + nums2.length;
-        int[] temp;
-        //保持num2长度较长
+        //1234
+        //0123
+        //使得num2为长数组，方便处理 --> nums2.length > nums1.length
+
         if (nums1.length > nums2.length) {
-            temp = nums1;
+            int[] temp = nums1;
             nums1 = nums2;
             nums2 = temp;
         }
-        //如果是偶数，留下了两位
-        for (int i = 0; i < nums1.length; i++) {
-
-
-
-
+        if (nums1.length == 0) {
+            if (nums2.length % 2 == 0) {
+                return (nums2[nums2.length / 2] + nums2[nums2.length / 2 - 1]) / 2.0;
+            } else {
+                return nums2[nums2.length / 2];
+            }
         }
+        int totalLength = nums1.length + nums2.length;
+        boolean isEven = totalLength % 2 == 0;
 
-
-        //如果是奇数，留下了一位
 
 
         return 0;
+
+
     }
 
     @Test
     public void test() {
-        int[] nums1 = {1, 2, 4};
-        int[] nums2 = {3, 11, 12};
+       /* int[] nums1 = {1, 2, 4};
+        int[] nums2 = {3, 11, 12};*/
+        int[] nums1 = {1, 6};
+        int[] nums2 = {3, 4, 5};
         double result = findMedianSortedArrays1(nums1, nums2);
         System.out.println("result = " + result);
     }
