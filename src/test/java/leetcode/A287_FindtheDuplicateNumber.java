@@ -29,6 +29,13 @@ import java.util.Arrays;
  * 数组中只有一个重复的数字，但它可能不止重复出现一次。
  */
 public class A287_FindtheDuplicateNumber {
+
+    /**
+     * 简单方法
+     *
+     * @param nums
+     * @return
+     */
     public int findDuplicate(int[] nums) {
         Arrays.sort(nums);
         int left = 0;
@@ -44,10 +51,38 @@ public class A287_FindtheDuplicateNumber {
         return -1;
     }
 
+    /**
+     * 折半查找下
+     *
+     * @param nums
+     * @return
+     */
+    public int findDuplicate1(int[] nums) {
+        Arrays.sort(nums);
+        //1,2,4,4,4
+        //0,1,2,3,4
+
+        //1,2,2,3,4
+        int left = 0;
+        int right = nums.length - 1;
+        while (left + 1 < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] - nums[left] < mid - left) {
+                right = mid;
+            } else {
+                left = mid;
+            }
+        }
+        if (nums[left] == nums[right]) {
+            return nums[left];
+        }
+        return -1;
+    }
+
     @Test
     public void test() {
-        int[] nums = {1, 3, 4, 2, 2};
-        System.out.println(findDuplicate(nums));
+        int[] nums = {1,2,4,4,4};
+        System.out.println(findDuplicate1(nums));
 
     }
 
