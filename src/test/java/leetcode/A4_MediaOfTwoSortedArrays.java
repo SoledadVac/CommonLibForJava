@@ -1,13 +1,12 @@
 package leetcode;
 
-import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 
 /**
  * \* Created: liuhuichao
  * \* Date: 2019/2/17
  * \* Time: 5:37 PM
- * \* Description:
+ * \* Description: 寻找两个有序数组的中位数
  * <p>
  * 给定两个大小为 m 和 n 的有序数组 nums1 和 nums2。
  * <p>
@@ -80,54 +79,6 @@ public class A4_MediaOfTwoSortedArrays {
     }
 
     /**
-     * 获取数组的中位数
-     *
-     * @param num
-     * @return
-     */
-    private double findMidNum(int[] num) {
-        int length = num.length;
-        if (length == 0) {
-            return 0;
-        }
-        if (length % 2 == 0) {
-            //总长度为偶数个
-            int t1 = num[length / 2];
-            int t2 = num[length / 2 - 1];
-            return (t1 + t2) / 2.0;
-        } else {
-            //总长度为奇数个
-            return num[length / 2];
-        }
-    }
-
-    private double findMidNumAdd(int[] num, int length) {
-        if (length % 2 == 0) {
-            // 1   //   2,3,4
-            //总长度为偶数个
-            int t1 = num[length / 2 - 1];
-            int t2 = num[length / 2];
-            return (t1 + t2) / 2.0;
-        } else {
-            // 1   //   2,3,4,5
-            //总长度为奇数个
-            return num[length / 2];
-        }
-    }
-
-    private int[] getNumBetween(int[] num, int begin, int end) {
-        if (begin == 0 && end == 0) {
-            return num;
-        }
-        int[] newNum = new int[end - begin + 1];
-        int j = 0;
-        for (int i = begin; i <= end; i++) {
-            newNum[j++] = num[i];
-        }
-        return newNum;
-    }
-
-    /**
      * 减小程序的时间复杂度
      * --------折半查找中位数
      * <p>
@@ -140,41 +91,56 @@ public class A4_MediaOfTwoSortedArrays {
      * <p>
      * A：{1，2，3}
      * B：{4，5，6}
-     * <p>
-     * <p>
-     * left_part          |        right_part
-     * A[0], A[1], ..., A[i-1]  |  A[i], A[i+1], ..., A[m-1]
-     * B[0], B[1], ..., B[j-1]  |  B[j], B[j+1], ..., B[n-1]
      *
-     * @param nums1
-     * @param nums2
+     * @param A
+     * @param B
      * @return
      */
-    public double findMedianSortedArrays1(int[] nums1, int[] nums2) {
-        //1234
-        //0123
-        //使得num2为长数组，方便处理 --> nums2.length > nums1.length
-
-        if (nums1.length > nums2.length) {
-            int[] temp = nums1;
-            nums1 = nums2;
-            nums2 = temp;
+    public double findMedianSortedArrays1(int[] A, int[] B) {
+        int m = A.length;
+        int n = B.length;
+        if (m > n) { // to ensure m<=n
+            int[] temp = A;
+            A = B;
+            B = temp;
+            int tmp = m;
+            m = n;
+            n = tmp;
         }
-        if (nums1.length == 0) {
-            if (nums2.length % 2 == 0) {
-                return (nums2[nums2.length / 2] + nums2[nums2.length / 2 - 1]) / 2.0;
-            } else {
-                return nums2[nums2.length / 2];
+        int iMin = 0, iMax = m, halfLen = (m + n + 1) / 2;
+        while (iMin <= iMax) {
+            int i = (iMin + iMax) / 2;
+            int j = halfLen - i;
+            if (i < iMax && B[j - 1] > A[i]) {
+                iMin = i + 1; // i is too small
+            } else if (i > iMin && A[i - 1] > B[j]) {
+                iMax = i - 1; // i is too big
+            } else { // i is perfect
+                int maxLeft = 0;
+                if (i == 0) {
+                    maxLeft = B[j - 1];
+                } else if (j == 0) {
+                    maxLeft = A[i - 1];
+                } else {
+                    maxLeft = Math.max(A[i - 1], B[j - 1]);
+                }
+                if ((m + n) % 2 == 1) {
+                    return maxLeft;
+                }
+
+                int minRight = 0;
+                if (i == m) {
+                    minRight = B[j];
+                } else if (j == n) {
+                    minRight = A[i];
+                } else {
+                    minRight = Math.min(B[j], A[i]);
+                }
+
+                return (maxLeft + minRight) / 2.0;
             }
         }
-        int totalLength = nums1.length + nums2.length;
-        boolean isEven = totalLength % 2 == 0;
-
-
-
-        return 0;
-
-
+        return 0.0;
     }
 
     @Test

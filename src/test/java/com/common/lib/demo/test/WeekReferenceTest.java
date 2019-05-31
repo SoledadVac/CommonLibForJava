@@ -1,11 +1,16 @@
 package com.common.lib.demo.test;
 
+import com.alibaba.fastjson.JSONObject;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.assertj.core.util.Maps;
 import org.junit.Test;
 
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
-import java.util.LinkedList;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * \* Created: liuhuichao
@@ -19,7 +24,7 @@ public class WeekReferenceTest {
     private static ReferenceQueue<VeryBig> rq = new ReferenceQueue<VeryBig>();
 
     @Test
-    public void test(){
+    public void test() {
         int size = 3;
         LinkedList<WeakReference<VeryBig>> weakList = new LinkedList<>();
         for (int i = 0; i < size; i++) {
@@ -41,7 +46,7 @@ public class WeekReferenceTest {
         Reference<? extends VeryBig> ref = null;
         while ((ref = rq.poll()) != null) {
             if (ref != null) {
-                System.out.println("In queue: "    + ((VeryBigWeakReference) (ref)).id);
+                System.out.println("In queue: " + ((VeryBigWeakReference) (ref)).id);
             }
         }
     }
@@ -72,6 +77,34 @@ public class WeekReferenceTest {
         protected void finalize() {
             System.out.println("Finalizing VeryBigWeakReference " + id);
         }
+    }
+
+    @Test
+    public void test1() {
+        List<Map<String, Student>> list = new ArrayList<>();
+        Map<String, Student> map1 = Maps.newHashMap("a", new Student("1", "lhc"));
+        Map<String, Student> map2 = Maps.newHashMap("a", new Student("2", "jay"));
+        Map<String, Student> map3 = Maps.newHashMap("a", new Student("2", "bbb"));
+        Map<String, Student> map4 = Maps.newHashMap("a", new Student("1", "ccc"));
+        Map<String, Student> map5 = Maps.newHashMap("a", new Student("2", "fff"));
+        list.add(map1);
+        list.add(map2);
+        list.add(map3);
+        list.add(map4);
+        list.add(map4);
+        list.add(map5);
+        Map<String, List<Student>> result = list.stream()
+                .map(map -> map.values())
+                .flatMap(Collection::stream)
+                .collect(Collectors.groupingBy(Student::getId));
+        System.out.println(JSONObject.toJSONString(result));
+    }
+
+    @Data
+    @AllArgsConstructor
+    class Student {
+        private String id;
+        private String name;
     }
 
 }
