@@ -1,9 +1,13 @@
 package leetcode;
 
+import org.junit.Test;
+
+import java.util.Stack;
+
 /**
  * \* Created: liuhuichao
  * \* Date: 2019/7/11
- * \* Time: 5:29 PM
+ * \* Time: 29:29 PM
  * \* Description:逆波兰表达式求值
  * \
  * 根据逆波兰表示法，求表达式的值。
@@ -39,7 +43,47 @@ package leetcode;
  */
 public class A159_EvaluateReversePolishNotation {
     public int evalRPN(String[] tokens) {
-        return -1;
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < tokens.length; i++) {
+            switch (tokens[i]) {
+                case "+":
+                    Integer n0 = stack.pop();
+                    Integer n1 = stack.pop();
+                    Integer r1 = n0 + n1;
+                    stack.push(r1);
+                    break;
+                case "-":
+                    Integer n2 = stack.pop();
+                    Integer n3 = stack.pop();
+                    Integer r2 = n3 - n2;
+                    stack.push(r2);
+                    break;
+                case "*":
+                    Integer n4 = stack.pop();
+                    Integer n5 = stack.pop();
+                    Integer r3 = n4 * n5;
+                    stack.push(r3);
+                    break;
+                case "/":
+                    Integer n6 = stack.pop();
+                    Integer n7 = stack.pop();
+                    Integer r4 = n7 / n6;
+                    stack.push(r4);
+                    break;
+                default:
+                    stack.push(Integer.valueOf(tokens[i]));
+                    break;
+            }
+        }
 
+        return stack.pop();
+
+    }
+
+
+    @Test
+    public void test() {
+        String[] tokens = {"10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"};
+        System.out.println("result = " + evalRPN(tokens));
     }
 }
