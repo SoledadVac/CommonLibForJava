@@ -44,6 +44,12 @@ public class A200_NumberofIslands {
 
     public static int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
+    /**
+     * 使用BFS
+     *
+     * @param grid
+     * @return
+     */
     public int numIslands(char[][] grid) {
         int rowNum = grid.length;
         if (rowNum == 0) {
@@ -96,12 +102,50 @@ public class A200_NumberofIslands {
         return false;
     }
 
+    /**
+     * 使用DFS
+     *
+     * @param grid
+     * @return
+     */
+    public int numIslands1(char[][] grid) {
+        int rowNum = grid.length;
+        if (rowNum == 0) {
+            return -1;
+        }
+        int colNum = grid[0].length;
+        if (colNum == 0) {
+            return -1;
+        }
+        int totalIsland = 0;
+        for (int r = 0; r < rowNum; r++) {
+            for (int c = 0; c < colNum; c++) {
+                if (grid[r][c] == 1) {
+                    totalIsland++;
+                    dfs(grid, r, c);
+                }
+            }
+        }
+        return totalIsland;
+    }
+
+    void dfs(char[][] grid, int r, int c) {
+        if (r < 0 || c < 0 || r >= grid.length || c >= grid[0].length || r - 1 < 0 || c - 1 < 0 || grid[r][c] == 0) {
+            return;
+        }
+        grid[r][c] = 0;
+        dfs(grid, r - 1, c);
+        dfs(grid, r + 1, c);
+        dfs(grid, r, c - 1);
+        dfs(grid, r, c + 1);
+    }
+
     @Test
     public void test() {
-        // char[][] grid = {{1, 1, 1, 1, 0}, {1, 1, 0, 1, 0}, {1, 1, 0, 0, 0}, {0, 0, 0, 0, 0}};
-        // char[][] grid = {{1, 1, 0, 1, 0}, {1, 1, 0, 0, 0}, {0, 0, 1, 0, 0}, {0, 0, 0, 1, 1}};
         char[][] grid = {{1, 1, 1, 1, 0}, {1, 1, 0, 1, 0}, {1, 1, 0, 0, 0}, {0, 0, 0, 0, 0}};
-        int result = numIslands(grid);
+        // char[][] grid = {{1, 1, 0, 1, 0}, {1, 1, 0, 0, 0}, {0, 0, 1, 0, 0}, {0, 0, 0, 1, 1}};
+        //char[][] grid = {{1, 1, 1, 1, 0}, {1, 1, 0, 1, 0}, {1, 1, 0, 0, 0}, {0, 0, 0, 0, 0}};
+        int result = numIslands1(grid);
         System.out.println("result = " + result);
     }
 
