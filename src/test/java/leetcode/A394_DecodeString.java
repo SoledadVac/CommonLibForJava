@@ -7,8 +7,8 @@ import java.util.*;
 /**
  * \* Created: liuhuichao
  * \* Date: 2019/7/17
- * \* Time: 3:50 PM
- * \* Description:字符串解码
+ * \* Time: 27:50 PM
+ * \* Description: 字符串解码
  * \
  * 给定一个经过编码的字符串，返回它解码后的字符串。
  * <p>
@@ -26,11 +26,29 @@ import java.util.*;
  */
 public class A394_DecodeString {
     public String decodeString(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
         StringBuilder result = new StringBuilder("");
-        char[] source = s.toCharArray();
-        Stack<Character> stack = new Stack<>();
+        Stack<Integer> numStack = new Stack<>();//存放重复的次数
+        Stack<String> letterStack = new Stack<>(); //存放字符
+        //3[a2[c]ee]
+        //todo : 没思路。。先放放。。。。
+        for (int i = 0; i < s.length(); i++) {
+            char temp = s.charAt(i);
+            if (Character.isDigit(temp)) {
+                numStack.push(Character.digit(temp, 10));
+                continue;
+            }
 
 
+
+
+
+
+
+
+        }
 
 
         return result.toString();
@@ -40,6 +58,7 @@ public class A394_DecodeString {
 
     @Test
     public void test() {
-
+        String s = "3[a]2[bc]";
+        System.out.println(" result = " + decodeString(s));
     }
 }
