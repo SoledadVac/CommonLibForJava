@@ -151,6 +151,11 @@ public class A707_DesignLinkedList {
             size--;
         }
 
+        /**
+         * console all data for debug
+         *
+         * @return
+         */
         public String consoleAll() {
             StringBuilder result = new StringBuilder();
             Node n = head;
