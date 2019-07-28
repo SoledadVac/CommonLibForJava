@@ -1,4 +1,4 @@
-package leetcode;
+package leetcode.LinkedList;
 
 import org.junit.Test;
 
