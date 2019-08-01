@@ -5,7 +5,7 @@ import org.junit.Test;
 /**
  * \* Created: liuhuichao
  * \* Date: 2019/8/1
- * \* Time: 5:21 PM
+ * \* Time: 29:21 PM
  * \* Description: 移除链表元素
  * \
  * 删除链表中等于给定值 val 的所有节点。
