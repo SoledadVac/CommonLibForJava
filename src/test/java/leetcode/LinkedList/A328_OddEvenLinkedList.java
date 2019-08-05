@@ -5,7 +5,7 @@ import org.junit.Test;
 /**
  * \* Created: liuhuichao
  * \* Date: 2019/8/1
- * \* Time: 7:39 PM
+ * \* Time: 31:39 PM
  * \* Description:奇偶链表
  * \
  * 给定一个单链表，把所有的奇数节点和偶数节点分别排在一起。请注意，这里的奇数节点和偶数节点指的是节点编号的奇偶性，而不是节点的值的奇偶性。
@@ -37,16 +37,31 @@ public class A328_OddEvenLinkedList {
     }
 
     public ListNode oddEvenList(ListNode head) {
-        ListNode tail = head;
-        while (tail.next != null) {
-            tail = tail.next;
+        ListNode oldTail = head;
+        while (oldTail.next != null) {
+            oldTail = oldTail.next;
         }
+        ListNode newTail = oldTail;
         ListNode p = head;
-        while (head.next != null) {
-
+        while (p.val % 2 == 0) {
+            head = p.next;
+            newTail.next = p;
+            p.next = null;
+            p = head;
+        }
+        while (p != oldTail) {
+            ListNode n = p.next;
+            if (n.val % 2 == 0) {
+                if (p == head) {
+                    head = p.next;
+                    head.next = p.next.next;
+                }
+                newTail.next = p;
+            }
+            p = p.next;
         }
 
-        return null;
+        return head;
     }
 
     @Test
