@@ -10,9 +10,21 @@ import org.junit.Test;
  * \* Time: 28:36 PM
  * \* Description: 01 package
  * \
+ * 5个物品价值 ：{4, 5, 10, 11, 13}
+ * 5个物品重量 ：{3, 4, 7, 8, 9}
+ * 背包限重 ：17
+ * 物品不可分割，求解背包获得的最大价值
  */
 public class A01Package {
 
+    /**
+     * 动态规划法
+     *
+     * @param vList
+     * @param wList
+     * @param W
+     * @return
+     */
     public Integer getMaxPackageValue(Integer[] vList, Integer[] wList, Integer W) {
         //构造子问题题解表
         int[][] table = new int[W + 1][vList.length + 1];
@@ -33,6 +45,7 @@ public class A01Package {
         }
         return table[W][vList.length];
     }
+
 
     @Test
     public void test() {

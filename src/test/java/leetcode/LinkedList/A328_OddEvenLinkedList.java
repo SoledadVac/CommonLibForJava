@@ -37,11 +37,11 @@ public class A328_OddEvenLinkedList {
     }
 
     public ListNode oddEvenList(ListNode head) {
-        ListNode oldTail = head;
+        ListNode oldTail = head; //固定在原链表表尾
         while (oldTail.next != null) {
             oldTail = oldTail.next;
         }
-        ListNode newTail = oldTail;
+        ListNode newTail = oldTail;//移动的队尾
         ListNode p = head;
         while (p.val % 2 == 0) {
             head = p.next;
