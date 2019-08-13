@@ -76,9 +76,44 @@ public class A328_OddEvenLinkedList {
         return head;
     }
 
+    public ListNode oddEvenList1(ListNode head) {
+        if (head == null || head.next == null || head.next.next == null) {
+            return head;
+        }
+        ListNode oldTail = head; //固定在原链表表尾
+        int sum = 1;
+        while (oldTail.next != null) {
+            sum++;
+            oldTail = oldTail.next;
+        }
+        int jump = sum / 2;
+        ListNode startNode = head.next;
+        ListNode prev = head; //上一个结点
+        Boolean isResetOldTaile = false;
+        ListNode p = startNode; //移动的指针，用于遍历固定队尾之前的结点
+        ListNode newTail = oldTail;//移动的队尾
+        while (jump > 0) {
+            //偶数，放到队尾后
+            if (oldTail.next == null &&
+                    !isResetOldTaile) {
+                isResetOldTaile = true;
+                oldTail = p;
+            }
+            ListNode next = p.next;
+            p.next = null;
+            newTail.next = p;
+            newTail = p;
+            prev.next = next;
+            prev = prev.next;
+            p = next.next;
+            jump--;
+        }
+        return head;
+    }
+
     @Test
     public void test() {
-        ListNode n1 = new ListNode(1);
+       /* ListNode n1 = new ListNode(1);
         ListNode n2 = new ListNode(2);
         ListNode n3 = new ListNode(3);
         ListNode n4 = new ListNode(4);
@@ -92,8 +127,19 @@ public class A328_OddEvenLinkedList {
         n4.next = n5;
         n5.next = n6;
         n6.next = n7;
-        n7.next = n8;
-        ListNode result = oddEvenList(n1);
+        n7.next = n8;*/
+
+        ListNode n1 = new ListNode(1);
+        ListNode n2 = new ListNode(2);
+        ListNode n3 = new ListNode(3);
+        ListNode n4 = new ListNode(4);
+        ListNode n5 = new ListNode(5);
+        n1.next = n2;
+        n2.next = n3;
+        n3.next = n4;
+        n4.next = n5;
+
+        ListNode result = oddEvenList1(n1);
         System.out.println("finish  -------------- result.val = " + result.val);
     }
 
