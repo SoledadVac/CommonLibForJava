@@ -6,7 +6,7 @@ import org.junit.Test;
 /**
  * \* Created: liuhuichao
  * \* Date: 2019/8/6
- * \* Time: 11:18 AM
+ * \* Time: 35:18 AM
  * \* Description: 回文链表
  * \
  * 请判断一个链表是否为回文链表。
