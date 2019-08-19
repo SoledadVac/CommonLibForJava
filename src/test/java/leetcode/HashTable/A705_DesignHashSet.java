@@ -2,10 +2,7 @@ package leetcode.HashTable;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * \* Created: liuhuichao
@@ -44,21 +41,22 @@ public class A705_DesignHashSet {
     class MyHashSet {
 
         private final Integer bucketNum = 10; //0 - 9
-        private transient Map<Integer, List<Integer>> buckets = new HashMap<>();
+        private transient List<List<Integer>> buckets = new ArrayList<>();
 
         /**
          * Initialize your data structure here.
          */
         public MyHashSet() {
-
+            for (int i = 0; i < bucketNum; i++) {
+                buckets.add(0, new ArrayList<>());
+            }
         }
 
         public void add(int key) {
             int bNum = key % bucketNum;
             List<Integer> bucket = buckets.get(bNum);
-            if (bucket == null) {
-                bucket = new ArrayList<>();
-                buckets.put(bNum, bucket);
+            if (bucket.contains(key)) {
+                return;
             }
             bucket.add(key);
         }
@@ -66,12 +64,10 @@ public class A705_DesignHashSet {
         public void remove(int key) {
             int bNum = key % bucketNum;
             List<Integer> bucket = buckets.get(bNum);
-            if (bucket == null) {
+            if (bucket == null || bucket.size() == 0) {
                 return;
             }
-            if (bucket.contains(key)) {
-                bucket.removeIf(v -> v == key);
-            }
+            bucket.removeIf(v -> v == key);
         }
 
         /**
@@ -80,7 +76,7 @@ public class A705_DesignHashSet {
         public boolean contains(int key) {
             int bNum = key % bucketNum;
             List<Integer> bucket = buckets.get(bNum);
-            if (bucket == null) {
+            if (bucket == null || bucket.size() == 0) {
                 return false;
             }
             return bucket.contains(key);
