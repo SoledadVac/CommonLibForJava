@@ -1,4 +1,4 @@
-package leetcode.BinarySearch;
+package leetcode.BinaryTree;
 
 import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import java.util.*;
  * \* Created: liuhuichao
  * \* Date: 2019/7/16
  * \* Time: 31:57 PM
- * \* Description:二叉树的中序遍历
+ * \* Description:二叉树的中序遍历 : 中序遍历是先遍历左子树，然后访问根节点，然后遍历右子树
  * \
  * 给定一个二叉树，返回它的中序 遍历。
  * <p>
@@ -64,6 +64,7 @@ public class A94_BinaryTreeInorderTraversal {
 
     /**
      * 基于栈的方式求解
+     * 中序遍历是先遍历左子树，然后访问根节点，然后遍历右子树
      *
      * @param root
      * @return
