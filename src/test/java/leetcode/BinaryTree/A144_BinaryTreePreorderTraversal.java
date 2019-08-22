@@ -31,16 +31,7 @@ import java.util.List;
 public class A144_BinaryTreePreorderTraversal {
 
 
-    //Definition for a binary tree node.
-    public class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
 
-        TreeNode(int x) {
-            val = x;
-        }
-    }
 
     //前序遍历首先访问根节点，然后遍历左子树，最后遍历右子树
     public List<Integer> preorderTraversal(TreeNode root) {

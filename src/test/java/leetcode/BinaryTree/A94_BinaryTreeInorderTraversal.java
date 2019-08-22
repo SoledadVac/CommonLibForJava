@@ -28,18 +28,6 @@ import java.util.*;
 public class A94_BinaryTreeInorderTraversal {
 
 
-    //Definition for a binary tree node.
-    public class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode(int x) {
-            val = x;
-        }
-    }
-
-
     public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> result = new ArrayList<>();
         inorderTraversal(root, result);
