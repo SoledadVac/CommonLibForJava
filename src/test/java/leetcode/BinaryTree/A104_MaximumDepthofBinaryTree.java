@@ -55,6 +55,15 @@ public class A104_MaximumDepthofBinaryTree {
     }
 
 
+    public int maxDepth1(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int depLeft = maxDepth1(root.left);
+        int depRight = maxDepth1(root.right);
+        return Math.max(depLeft, depRight) + 1;
+    }
+
 
     @Test
     public void test() {
@@ -67,6 +76,6 @@ public class A104_MaximumDepthofBinaryTree {
         root.right = n20;
         n20.left = n15;
         n20.right = n7;
-        System.out.println("result = " + maxDepth(root));
+        System.out.println("result = " + maxDepth1(root));
     }
 }
