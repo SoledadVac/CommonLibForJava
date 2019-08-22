@@ -1,6 +1,5 @@
 package leetcode.BinaryTree;
 
-import org.apache.hadoop.yarn.webapp.hamlet.Hamlet;
 import org.junit.Test;
 
 import java.util.ArrayList;
