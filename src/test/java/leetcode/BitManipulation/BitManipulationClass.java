@@ -41,6 +41,22 @@ public class BitManipulationClass {
         return res;
     }
 
+    /**
+     * 二进制翻转
+     * 0010 --> 0100
+     *
+     * @param n
+     * @return
+     */
+    public int reverseBits(int n) {
+        int result = 0;
+        for (int i = 0; i < 32; i++) {
+            int val = n >> i & 1;
+            result = val << (31 - i) | result;
+        }
+        return result;
+    }
+
 
     @Test
     public void testconsoleIntegerByte() {
