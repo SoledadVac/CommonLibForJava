@@ -60,10 +60,10 @@ public class BitManipulationClass {
 
     @Test
     public void testconsoleIntegerByte() {
-        int num = -2147483648;
+        int num = 2;
         int[] result = consoleIntegerByte(num);
         System.out.println(JSONObject.toJSONString(result));
-       // int numcopy = consoleIntegerFromByte(result);
+        // int numcopy = consoleIntegerFromByte(result);
         //System.out.println("numcopy = " + numcopy);
     }
 }
