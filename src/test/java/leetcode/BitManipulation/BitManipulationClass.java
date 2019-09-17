@@ -58,9 +58,29 @@ public class BitManipulationClass {
     }
 
 
+    /**
+     * 数字转换为16进制
+     *
+     * @param num
+     * @return
+     */
+    public String toHex(int num) {
+        if (num == 0) {
+            return "0";
+        }
+        String code = "";
+        String hex = "0123456789abcdef";
+        for (int i = 7; i >= 0; i--) {
+            int move = 4 * i;
+            int val = num >> (move) & 0xf;
+            code += hex.charAt(val);
+        }
+        return code.replaceFirst("^0*", "");
+    }
+
     @Test
     public void testconsoleIntegerByte() {
-        int num = 2;
+        int num = -1;
         int[] result = consoleIntegerByte(num);
         System.out.println(JSONObject.toJSONString(result));
         // int numcopy = consoleIntegerFromByte(result);
