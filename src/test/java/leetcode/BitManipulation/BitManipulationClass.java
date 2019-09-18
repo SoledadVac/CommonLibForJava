@@ -84,18 +84,18 @@ public class BitManipulationClass {
      * 只要找到比num最高1位的位置高一位（左边）就行了，此时该数必然大于num，
      * 如num=5（101B）时，这个数为8（1000B），
      * 将其减1，则得到与num有效二进制位数相同且各位都为1的数。如8-1=7（111B）
+     *
      * @param num
      * @return
      */
-    public int findComplement(int num){
+    public int findComplement(int num) {
         long num0 = 1;
-
-        while(num0 <= num)
+        while (num0 <= num)
             num0 = num0 << 1;
 
         num0 -= 1;
 
-        return (int)num0 ^ num;
+        return (int) num0 ^ num;
     }
 
     /**
@@ -106,14 +106,15 @@ public class BitManipulationClass {
      * 1111 1010 - 1 = 1111   1001
      * 1111 1001 取反 = 1（符号位） 0000 0110 ( - 6)
      * 1... 0000 0110 & 0000 0011 = 0... 0000 0010 ( 2 )
+     *
      * @param num
      * @return
      */
-    public int findComplement1(int num){
-        int tmp = num,bit = 0;
-        while(tmp > 0 ){
+    public int findComplement1(int num) {
+        int tmp = num, bit = 0;
+        while (tmp > 0) {
             tmp >>= 1;
-            if(bit == 0)
+            if (bit == 0)
                 bit = 1;
             else
                 bit = bit << 1;
@@ -121,12 +122,26 @@ public class BitManipulationClass {
         return ~num & (bit - 1);
     }
 
+    /**
+     * 将字符大写变小写，小写变大写
+     *
+     * @param c
+     * @return
+     */
+    public char changeWordToOtherCase(char c) {
+        c ^= (1 << 5);
+        return c;
+    }
+
     @Test
     public void testconsoleIntegerByte() {
-        int num = -1;
+        /*int num = -1;
         int[] result = consoleIntegerByte(num);
-        System.out.println(JSONObject.toJSONString(result));
+        System.out.println(JSONObject.toJSONString(result));*/
         // int numcopy = consoleIntegerFromByte(result);
         //System.out.println("numcopy = " + numcopy);
+
+        char c = 'A';
+        System.out.println(changeWordToOtherCase(c));
     }
 }
