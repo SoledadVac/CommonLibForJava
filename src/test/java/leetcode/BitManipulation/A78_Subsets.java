@@ -64,11 +64,32 @@ public class A78_Subsets {
         }
     }
 
+    /**
+     * 二进制匹配
+     *
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> subsets1(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        int length = 1 << nums.length;
+        for (int i = 0; i < length; i++) {
+            List<Integer> list = new ArrayList<>();
+            for (int j = 0; j < nums.length; j++) {
+                if (((1 << j) & i) != 0) {
+                    list.add(nums[j]);
+                }
+            }
+            res.add(list);
+        }
+        return res;
+    }
+
 
     @Test
     public void test() {
         int[] nums = {1, 2, 3};
-        System.out.println("result = " + JSONObject.toJSONString(subsets(nums)));
+        System.out.println("result = " + JSONObject.toJSONString(subsets1(nums)));
     }
 
 }
