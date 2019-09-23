@@ -133,6 +133,16 @@ public class BitManipulationClass {
         return c;
     }
 
+    /**
+     * 获取数字的最低非0位
+     *
+     * @param xor
+     * @return
+     */
+    public int getMask(int xor) {
+        return xor & (-xor);
+    }
+
     @Test
     public void testconsoleIntegerByte() {
         /*int num = -1;
