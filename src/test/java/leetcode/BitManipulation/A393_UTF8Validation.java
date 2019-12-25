@@ -1,5 +1,6 @@
 package leetcode.BitManipulation;
 
+import com.google.inject.internal.asm.$Attribute;
 import org.junit.Test;
 
 /**
@@ -46,16 +47,64 @@ import org.junit.Test;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class A393_UTF8Validation {
-    
-    public boolean validUtf8(int[] data) {
-        // todo : UTF-8 编码验证
 
+    public boolean validUtf8(int[] data) {
+        if (data.length == 0) {
+            return false;
+        }
+        if (data.length == 1) {
+            return (data[0] >> 7) == 0;
+        }
+        int end = 0;
+        for (int i = 0; i < data.length; i++) {
+            if (i < end) {
+                continue;
+            }
+            end = valid(data, i);
+            if (end == -1) {
+                return false;
+            }
+        }
         return true;
+    }
+
+    public int valid(int[] data, int begin) {
+        int v = data[begin];
+        if ((v >> 7) == 0) {
+            return begin + 1;
+        }
+        int n = 0;
+        int vBegin = data[begin];
+        int front = (1 << 7) | (1 << 6) | (1 << 5) | (1 << 4);
+        for (int move = 3; move <= 5; move++) {
+            if ((vBegin >> move) == (front >> move)) {
+                n = 7 - move;
+                break;
+            } else {
+                front = front ^ (1 << (move + 1));
+            }
+        }
+        if (n == 0) {
+            return -1;
+        }
+        for (int index = begin + 1; index <= begin + n - 1; index++) {
+            int value = data[index];
+            int f = 1 << 7;
+            if ((f >> 6) != (value >> 6)) {
+                return -1;
+            }
+        }
+        return begin + n;
     }
 
     @Test
     public void test() {
-        int[] data = {197, 130, 1};
+        //int[] data = {240, 162, 138, 147, 145}; //false
+        //int[] data = {197, 130, 1}; //true
+        //int[] data = {235, 140, 4};
+        // int[] data = {228, 189, 160, 229, 165, 189, 13, 10};//true
+        //int[] data = {237};
+        int[] data = {39, 89, 227, 83, 132, 95, 10, 0};//true
         System.out.println("result = " + validUtf8(data));
     }
 
