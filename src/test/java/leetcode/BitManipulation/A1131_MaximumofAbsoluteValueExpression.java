@@ -73,6 +73,8 @@ public class A1131_MaximumofAbsoluteValueExpression {
         return result;
     }
 
+
+
     @Test
     public void test() {
         int[] arr1 = {1, 2, 3, 4};
