@@ -30,8 +30,7 @@ public class A421_MaximumXORofTwoNumbersinanArray {
 
     public int findMaximumXOR(int[] nums) {
         int res = 0;
-        // todo : 最大异或值
-
+        //todo :  最大异或值
 
 
         return res;

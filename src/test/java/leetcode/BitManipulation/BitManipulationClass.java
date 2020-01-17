@@ -3,6 +3,8 @@ package leetcode.BitManipulation;
 import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 
+import java.util.BitSet;
+
 
 /**
  * \* Created: liuhuichao
@@ -151,7 +153,13 @@ public class BitManipulationClass {
         // int numcopy = consoleIntegerFromByte(result);
         //System.out.println("numcopy = " + numcopy);
 
-        char c = 'A';
-        System.out.println(changeWordToOtherCase(c));
+       /* char c = 'A';
+        System.out.println(changeWordToOtherCase(c));*/
+
+        BitSet bitSet = new BitSet(4);
+        byte[] bytes = new byte[]{1, 3, 4};
+        System.out.println("bitSet: " + bitSet);
+        bitSet = BitSet.valueOf(bytes);
+        System.out.println("bitSet: " + bitSet);
     }
 }

@@ -1,4 +1,4 @@
-package leetcode.BinarySearch;
+package leetcode.ArrayAndString;
 
 import org.junit.Test;
 
