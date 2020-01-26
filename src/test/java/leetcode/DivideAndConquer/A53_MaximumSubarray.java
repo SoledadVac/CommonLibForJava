@@ -60,10 +60,21 @@ public class A53_MaximumSubarray {
         return letfMaxV + rightMaxV;
     }
 
+
+    public int maxSubArray0(int[] nums) {
+        int maxV = nums[0];
+        int currentV = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            currentV = Math.max(nums[i], currentV + nums[i]);
+            maxV=Math.max(maxV,currentV);
+        }
+        return maxV;
+    }
+
     @Test
     public void test() {
         int[] nums = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
-        System.out.println(maxSubArray(nums));
+        System.out.println(maxSubArray0(nums));
     }
 
 }
