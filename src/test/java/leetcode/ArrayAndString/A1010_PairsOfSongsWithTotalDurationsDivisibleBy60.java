@@ -68,10 +68,25 @@ public class A1010_PairsOfSongsWithTotalDurationsDivisibleBy60 {
         return num;
     }
 
+    public int numPairsDivisibleBy60_1(int[] time) {
+        if (time.length < 2) {
+            return 0;
+        }
+        int num = 0;
+        int[] data = new int[60];
+        for (int t : time) {
+            int mod = t % 60;
+            int dif = 60 - mod;
+            num += data[dif % 60];
+            data[mod]++;
+        }
+        return num;
+    }
+
     @Test
     public void test() {
-        int[] time = {30, 20, 150, 100, 40};
-        System.out.println(numPairsDivisibleBy60(time));
+        int[] time = {60, 60};
+        System.out.println(numPairsDivisibleBy60_1(time));
     }
 
 }
