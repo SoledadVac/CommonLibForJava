@@ -1,11 +1,9 @@
 package leetcode.ArrayAndString;
 
 import com.alibaba.fastjson.JSONObject;
-import com.kenai.jaffl.annotations.In;
-import org.apache.commons.collections.EnumerationUtils;
 import org.junit.Test;
 
-import java.util.Map;
+import java.util.Arrays;
 import java.util.TreeMap;
 
 /**
@@ -37,8 +35,8 @@ import java.util.TreeMap;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class A88_MergeSortedArray {
-    public void merge(int[] nums1, int m, int[] nums2, int n) {
-        TreeMap<Integer, Integer> treeMap = new TreeMap<>((k1, k2) -> k1 - k2); // key:数字，value: 个数
+    public void merge0(int[] nums1, int m, int[] nums2, int n) {
+        TreeMap<Integer, Integer> treeMap = new TreeMap<>(); // key:数字，value: 个数
         for (int i = 0; i < m; i++) {
             if (treeMap.containsKey(nums1[i])) {
                 treeMap.put(nums1[i], treeMap.get(nums1[i]) + 1);
@@ -64,12 +62,41 @@ public class A88_MergeSortedArray {
         }
     }
 
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int indexm = 0;
+        int indexn = 0;
+        int[] n1Copy = nums1.clone();
+        int indexNew = -1;
+        while (indexm < m || indexn < n) {
+            indexNew++;
+            if (indexm == m) {
+                nums1[indexNew] = nums2[indexn];
+                indexn++;
+                continue;
+            }
+
+            if (indexn == n) {
+                nums1[indexNew] = n1Copy[indexm];
+                indexm++;
+                continue;
+            }
+            if (n1Copy[indexm] >= nums2[indexn]) {
+                nums1[indexNew] = nums2[indexn];
+                indexn++;
+            } else {
+                nums1[indexNew] = n1Copy[indexm];
+                indexm++;
+            }
+        }
+
+    }
+
     @Test
     public void test() {
-        int[] nums1 = {1, 2, 3, 0, 0, 0};
-        int m = 3;
-        int[] nums2 = {2, 5, 6};
-        int n = 3;
+        int[] nums1 = {2, 0};
+        int m = 1;
+        int[] nums2 = {1};
+        int n = 1;
         merge(nums1, m, nums2, n);
         System.out.println(JSONObject.toJSON(nums1));
     }
