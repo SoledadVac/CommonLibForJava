@@ -58,7 +58,13 @@ import java.util.Map;
  */
 public class A914_XOfAKindInADeckOfCards {
 
-    public boolean hasGroupsSizeX(int[] deck) {
+    /**
+     * 有点烂，但是能过，后半段最好还是求几个数是否存在最大公约数
+     *
+     * @param deck
+     * @return
+     */
+    public boolean hasGroupsSizeX0(int[] deck) {
         if (deck.length <= 1) {
             return false;
         }
@@ -89,6 +95,34 @@ public class A914_XOfAKindInADeckOfCards {
             }
         }
         return false;
+    }
+
+    public boolean hasGroupsSizeX(int[] deck) {
+        if (deck.length <= 1) {
+            return false;
+        }
+        if (deck.length == 2) {
+            return deck[0] == deck[1];
+        }
+        //长度大于2
+        //先统计下每个数字个数
+        Map<Integer, Integer> data = new HashMap<>();
+        for (int i = 0; i < deck.length; i++) {
+            data.put(deck[i], data.getOrDefault(deck[i], 0) + 1);
+        }
+        int x = 0;
+        for (Integer v : data.values()) {
+            x = gcd(x, v);
+            if (x == 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public int gcd(int a, int b) {
+        //gcd(a,b) = gcd(b,a mod b)
+        return b == 0 ? a : gcd(b, a % b);
     }
 
     @Test
