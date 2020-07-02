@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * \* Created: liuhuichao
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
  */
 public class A56_MergeIntervals {
 
-    public int[][] merge(int[][] intervals) {
+    public int[][] merge0(int[][] intervals) {
         Set<Integer> indexSet = new HashSet<>();
         List<int[]> data = new ArrayList<>();
         for (int x = 0; x < intervals.length; x++) {
@@ -56,6 +57,23 @@ public class A56_MergeIntervals {
             return data.toArray(new int[data.size()][2]);
         }
         return merge(data.toArray(new int[data.size()][2]));
+    }
+
+    public int[][] merge(int[][] intervals) {
+        int[][] res = new int[intervals.length][2];
+        int index = -1;
+        Arrays.sort(intervals, Comparator.comparingInt(d -> d[0]));
+        for (int[] item : intervals) {
+            //跟上一个比较
+            if (index == -1 || item[0] > res[index][1]) {
+                res[++index] = item;
+                continue;
+            }
+            //如果在范围内的话,合并到结果的上一个值
+            res[index][1] = Math.max(res[index][1], item[1]);
+        }
+
+        return Arrays.copyOf(res, index + 1);
     }
 
     @Test
