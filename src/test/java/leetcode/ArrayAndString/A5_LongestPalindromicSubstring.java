@@ -143,6 +143,53 @@ public class A5_LongestPalindromicSubstring {
         return s.substring(begin, end + 1);
     }
 
+    /**
+     * 中心扩散法
+     *
+     * @param s
+     * @return
+     */
+    public String longestPalindrome2(String s) {
+        if (s == null || s.length() < 1) {
+            return "";
+        }
+        if (s.length() == 1) {
+            return s;
+        }
+        String result = s.substring(0, 1);
+        //分别以每个值作为中心点往外扩散看能扩散多远
+        for (int i = 0; i < s.length() - 1; i++) {
+            String oddStr = getCenter(s, i, true);//以中心点为奇数长度时候
+            String evenStr = getCenter(s, i, false);//以中新店为偶数时候
+            String maxStr = oddStr.length() > evenStr.length() ? oddStr : evenStr;
+            result = maxStr.length() > result.length() ? maxStr : result;
+        }
+        return result;
+    }
+
+    public String getCenter(String s, int centerIndex, boolean isOdd) {
+        int left;
+        int right;
+        if (isOdd) {
+            //奇数长度，中心点为centerIndex
+            left = centerIndex;
+            right = centerIndex;
+        } else {
+            //偶数长度
+            left = centerIndex;
+            right = centerIndex + 1;
+        }
+        while (left >= 0 && right <= s.length() - 1) {
+            if (s.charAt(left) == s.charAt(right)) {
+                left--;
+                right++;
+            } else {
+                break;
+            }
+
+        }
+        return s.substring(left + 1, right);
+    }
 
     @Test
     public void test() {
@@ -152,7 +199,7 @@ public class A5_LongestPalindromicSubstring {
 
         //String s0 = "bab"; // bab
         String s0 = "aaaa"; // bab
-        System.out.println(longestPalindrome1(s0));
+        System.out.println(longestPalindrome2(s0));
 
       /*  String s0 = "aledadi"; // idadela
         //           0123456   // 0123456
