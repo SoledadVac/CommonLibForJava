@@ -83,7 +83,7 @@ public class A5_LongestPalindromicSubstring {
 
 
     /**
-     * 最长公共子串
+     * 最长公共子串 --- 动态规划法
      *
      * @param s
      * @return
@@ -95,44 +95,54 @@ public class A5_LongestPalindromicSubstring {
         if (s.length() == 1) {
             return s;
         }
-        if (s.length() == 2) {
-            if (s.indexOf(0) == s.indexOf(1)) {
-                return s;
-            } else {
-                return s.substring(0, 1);
+        int n = s.length();//总长度
+        boolean[][] dpTable = new boolean[n][n];//表格
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                //初始化值
+                if (i == j) {
+                    dpTable[i][j] = true;
+                }
             }
         }
-        int length = s.length();
-        String result = s.substring(0, 1);
-        String reverseStr;
-        char[] reverseChar = new char[s.length()];
-        for (int i = s.length() - 1; i >= 0; i--) {
-            reverseChar[s.length() - 1 - i] = s.charAt(i);
-        }
-        reverseStr = new String(reverseChar);
-        for (int begin = 0; begin < reverseStr.length(); begin++) {
-            for (int end = begin + 1; end < reverseStr.length(); end++) {
-                String tempStr = reverseStr.substring(begin, end); // begin -> end -1
-                if (!s.contains(tempStr)) {
-                    break;
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = 0; j < n; j++) {
+                if (i >= j) {
+                    // (i,j)代表这个区间内，并且需要j>=i
+                    continue;
                 }
-                if (result.length() <= tempStr.length()) {
-                    //检查result是否会有 （abacdfgdcaba = 》abacdgfdcaba）这种翻转后包含的问题
-
-
-                    //头部位置检查
-
-                    //尾部位置检查
-
-                    if (length - (reverseStr.lastIndexOf(tempStr) + tempStr.length() - 1) - 1 != s.indexOf(tempStr)) {
-                        continue;
-                    }
-                    result = tempStr;
+                if (s.charAt(i) != s.charAt(j)) {
+                    //头尾部不相等肯定不是回文
+                    dpTable[i][j] = false;
+                    continue;
                 }
-
+                if (i + 1 == j) {
+                    //两个连续字母
+                    dpTable[i][j] = true;
+                    continue;
+                }
+                //头尾部相等，需要判断中间部分是不是
+                if (dpTable[i + 1][j - 1]) {
+                    dpTable[i][j] = true;
+                    continue;
+                }
+                dpTable[i][j] = false;
             }
         }
-        return result;
+        int begin = 0;
+        int end = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i > j) {
+                    continue;
+                }
+                if ((j - i) > (end - begin) && dpTable[i][j]) {
+                    begin = i;
+                    end = j;
+                }
+            }
+        }
+        return s.substring(begin, end + 1);
     }
 
 
@@ -142,7 +152,8 @@ public class A5_LongestPalindromicSubstring {
         //bb
         //babad
 
-        String s0 = "bab"; // bab
+        //String s0 = "bab"; // bab
+        String s0 = "aaaa"; // bab
         System.out.println(longestPalindrome1(s0));
 
       /*  String s0 = "aledadi"; // idadela
