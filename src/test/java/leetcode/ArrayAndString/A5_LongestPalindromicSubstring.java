@@ -97,18 +97,21 @@ public class A5_LongestPalindromicSubstring {
         }
         int n = s.length();//总长度
         boolean[][] dpTable = new boolean[n][n];//表格
-        for (int i = 0; i < n; i++) {
+        int begin = 0;
+        int end = 0;
+        for (int i = n - 1; i >= 0; i--) {
             for (int j = 0; j < n; j++) {
+                if (i > j) {
+                    // (i,j)代表这个区间内，并且需要j>=i
+                    continue;
+                }
                 //初始化值
                 if (i == j) {
                     dpTable[i][j] = true;
-                }
-            }
-        }
-        for (int i = n - 1; i >= 0; i--) {
-            for (int j = 0; j < n; j++) {
-                if (i >= j) {
-                    // (i,j)代表这个区间内，并且需要j>=i
+                    if ((j - i) > (end - begin)) {
+                        begin = i;
+                        end = j;
+                    }
                     continue;
                 }
                 if (s.charAt(i) != s.charAt(j)) {
@@ -119,27 +122,22 @@ public class A5_LongestPalindromicSubstring {
                 if (i + 1 == j) {
                     //两个连续字母
                     dpTable[i][j] = true;
+                    if ((j - i) > (end - begin)) {
+                        begin = i;
+                        end = j;
+                    }
                     continue;
                 }
                 //头尾部相等，需要判断中间部分是不是
                 if (dpTable[i + 1][j - 1]) {
                     dpTable[i][j] = true;
+                    if ((j - i) > (end - begin)) {
+                        begin = i;
+                        end = j;
+                    }
                     continue;
                 }
                 dpTable[i][j] = false;
-            }
-        }
-        int begin = 0;
-        int end = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (i > j) {
-                    continue;
-                }
-                if ((j - i) > (end - begin) && dpTable[i][j]) {
-                    begin = i;
-                    end = j;
-                }
             }
         }
         return s.substring(begin, end + 1);
