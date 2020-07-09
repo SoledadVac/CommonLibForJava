@@ -191,6 +191,138 @@ public class A5_LongestPalindromicSubstring {
         return s.substring(left + 1, right);
     }
 
+    /**
+     * Manacher 算法 n方
+     *
+     * @param s
+     * @return
+     */
+    public String longestPalindrome3(String s) {
+        if (s == null || s.length() < 1) {
+            return "";
+        }
+        if (s.length() == 1) {
+            return s;
+        }
+        String newS = wrapStrings(s);
+        int maxStep = 1;
+        int start = 0;
+        for (int i = 0; i < newS.length(); i++) {
+            int step = getStep(newS, i);
+            if (step > maxStep) {
+                maxStep = step;
+                start = (i - maxStep) / 2;
+            }
+        }
+        return s.substring(start, start + maxStep);
+    }
+
+    /**
+     * 将字符串包装为奇数个字符（n个 -> 2n+1个） ： aba -> #a#b#a#
+     *
+     * @param s
+     * @return
+     */
+    public String wrapStrings(String s) {
+        StringBuilder sb = new StringBuilder("#");
+        for (char c : s.toCharArray()) {
+            sb.append(c);
+            sb.append("#");
+        }
+        return sb.toString(); //奇数个字符
+    }
+
+    /**
+     * 获取从中心点向两边扩散的的最大步长
+     *
+     * @param s
+     * @param centerIndex
+     * @return
+     */
+    public int getStep(String s, int centerIndex) {
+        int left = centerIndex - 1;
+        int right = centerIndex + 1;
+        int step = 0;
+        while (left >= 0 && right <= s.length() - 1) {
+            if (s.charAt(left) == s.charAt(right)) {
+                left--;
+                right++;
+                step++;
+            } else {
+                break;
+            }
+        }
+        return step;
+    }
+
+
+    /**
+     * Manacher -- n复杂度算法
+     *
+     * @param s
+     * @return
+     */
+    public String longestPalindrome4(String s) {
+        // 特判
+        int len = s.length();
+        if (len < 2) {
+            return s;
+        }
+        String T = processS(s);
+        int n = T.length();
+        int[] P = new int[n];
+        int C = 0, R = 0;
+        for (int i = 1; i < n - 1; i++) {
+            int i_mirror = 2 * C - i;
+            if (R > i) {
+                P[i] = Math.min(R - i, P[i_mirror]);// 防止超出 R
+            } else {
+                P[i] = 0;// 等于 R 的情况
+            }
+
+            // 碰到之前讲的三种情况时候，需要利用中心扩展法
+            while (T.charAt(i + 1 + P[i]) == T.charAt(i - 1 - P[i])) {
+                P[i]++;
+            }
+
+            // 判断是否需要更新 R
+            if (i + P[i] > R) {
+                C = i;
+                R = i + P[i];
+            }
+
+        }
+        // 找出 P 的最大值
+        int maxLen = 0;
+        int centerIndex = 0;
+        for (int i = 1; i < n - 1; i++) {
+            if (P[i] > maxLen) {
+                maxLen = P[i];
+                centerIndex = i;
+            }
+        }
+        int start = (centerIndex - maxLen) / 2; //最开始讲的求原字符串下标
+        return s.substring(start, start + maxLen);
+    }
+
+
+    /**
+     * 处理字符串 -- aba -> ^#a#b#a#$
+     *
+     * @param s
+     * @return
+     */
+    public String processS(String s) {
+        StringBuilder sb = new StringBuilder("^#");
+        for (char c : s.toCharArray()) {
+            sb.append(c);
+            sb.append("#");
+        }
+        sb.append("$");
+        return sb.toString(); //奇数个字符
+    }
+
+
     @Test
     public void test() {
         //babad
@@ -198,8 +330,8 @@ public class A5_LongestPalindromicSubstring {
         //babad
 
         //String s0 = "bab"; // bab
-        String s0 = "aaaa"; // bab
-        System.out.println(longestPalindrome2(s0));
+        String s0 = "cbbd"; // bab
+        System.out.println(longestPalindrome4(s0));
 
       /*  String s0 = "aledadi"; // idadela
         //           0123456   // 0123456
