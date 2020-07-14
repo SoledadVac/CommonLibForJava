@@ -1,5 +1,6 @@
 package leetcode.ArrayAndString;
 
+import org.apache.xmlbeans.impl.tool.XSTCTester;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -307,21 +308,94 @@ public class A5_LongestPalindromicSubstring {
 
 
     /**
-     * 处理字符串 -- aba -> ^#a#b#a#$
+     * 处理字符串
      *
      * @param s
      * @return
      */
     public String processS(String s) {
-        StringBuilder sb = new StringBuilder("^#");
+        StringBuilder sb = new StringBuilder("#");
         for (char c : s.toCharArray()) {
             sb.append(c);
             sb.append("#");
         }
-        sb.append("$");
         return sb.toString(); //奇数个字符
     }
 
+
+    public String longestPalindrome5(String s) {
+        // 特判
+        int len = s.length();
+        if (len < 2) {
+            return s;
+        }
+        String T = processS(s);
+        int n = T.length();
+        int[] p = new int[n];
+        int centerIndex = 0, maxRightIndex = 0;
+        for (int i = 0; i < n; i++) {
+            if (i == 0 || i == n - 1) {
+                p[i] = 0;
+                continue;
+            }
+            int iMirror = 2 * centerIndex - i;
+            if (i > maxRightIndex) {
+                //中心扩散吧
+                int left = i - 1;
+                int right = i + 1;
+                while (left >= 0 && right < n) {
+                    if (T.charAt(left) == T.charAt(right)) {
+                        left--;
+                        right++;
+                        p[i]++;
+                    } else {
+                        break;
+                    }
+                }
+                centerIndex = i;
+                maxRightIndex = p[i];
+                continue;
+            }
+            // i < maxRightIndex
+            //1， ` p[iMirror] < maxRightIndex - i` 时候,p[i]=p[iMirror]
+            if (p[iMirror] < maxRightIndex - i) {
+                p[i] = p[iMirror];
+                continue;
+            }
+            //2， ` p[iMirror] = maxRightIndex - i` 时候,p[i]至少为maxRightIndex - i，此时需要以maxRightIndex进行中心扩散法计算。
+            if (p[iMirror] == maxRightIndex - i) {
+                p[i] = p[iMirror];
+                int left = i - p[i];
+                int right = i + p[i];
+                while (left >= 0 && right < n) {
+                    if (T.charAt(left) == T.charAt(right)) {
+                        left--;
+                        right++;
+                        p[i]++;
+                    } else {
+                        break;
+                    }
+                }
+                centerIndex = i;
+                maxRightIndex = i + p[i];
+                continue;
+            }
+            //3， ` p[iMirror] > maxRightIndex - i` 时候,根据centerIndex的对称性，p[i]的最大值，只能是`maxRightIndex - i`,不能再多。
+            if (p[iMirror] > maxRightIndex - i) {
+                p[i] = maxRightIndex - i;
+            }
+        }
+        int center = 0;
+        int step = 0;
+        for (int i = 0; i < p.length; i++) {
+            if (p[i] > step) {
+                center = i;
+                step = p[i];
+            }
+        }
+        int start = (center - step) / 2;
+        return s.substring(start, start + step);
+    }
 
     @Test
     public void test() {
@@ -329,11 +403,11 @@ public class A5_LongestPalindromicSubstring {
         //bb
         //babad
 
-        //String s0 = "bab"; // bab
-        String s0 = "cbbd"; // bab
-        System.out.println(longestPalindrome4(s0));
+        String s0 = "bab"; // bab
+        // String s0 = "ccc"; // bab
+        System.out.println(longestPalindrome5(s0));
 
-      /*  String s0 = "aledadi"; // idadela
+        /*  String s0 = "aledadi"; // idadela
         //           0123456   // 0123456
 
         System.out.println(longestPalindrome1(s0));*/
