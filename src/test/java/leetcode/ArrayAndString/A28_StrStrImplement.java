@@ -3,8 +3,8 @@ package leetcode.ArrayAndString;
 import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * \* Created: liuhuichao
@@ -201,22 +201,83 @@ public class A28_StrStrImplement {
                 result[i++] = 0;
             } else {
                 //匹配失败，看看公共串有没有前缀和后缀相等的部分，有的话，相等部分的后一个字母比较
+                // aafaaa ,到最后一个a时候，匹配失败，len=2,根据前面匹配的公共串，看看公共串的公共串能不能对折
                 len = result[len - 1];
             }
         }
         return result;
     }
 
+
+    /**
+     * ----robin carp--------
+     **/
+    public int charToIntVale(char s) {
+        return s - 'a';
+    }
+
+    /**
+     * robin carp 实现
+     *
+     * @param haystack
+     * @param needle
+     * @return
+     */
+    public int strStr3(String haystack, String needle) {
+        if (haystack.length() < needle.length()) {
+            return -1;
+        }
+        if ("".equals(haystack) && "".equals(needle)) {
+            return 0;
+        }
+        if (haystack.length() < 1) {
+            return -1;
+        }
+        if (needle.length() < 1) {
+            return 0;
+        }
+        long module = (long) Math.pow(2, 31); //控制在2的31次之下
+        int baseNum = 26;
+        //先计算初始hash值
+        long hashHaystack = 0;
+        long hashNeedle = 0;
+        int l = needle.length();
+        for (int index = 0; index < l; index++) {
+            hashNeedle = (hashNeedle * baseNum + charToIntVale(needle.charAt(index))) % module;
+            hashHaystack = ((hashHaystack * baseNum) + charToIntVale(haystack.charAt(index))) % module;
+        }
+        if (hashHaystack == hashNeedle) {
+            return 0;
+        }
+        // const value to be used often : a**L % modulus
+        long aL = 1;
+        for (int i = 1; i <= l; ++i) aL = (aL * baseNum) % module;
+
+        for (int index = 1; index < haystack.length() - l + 1; index++) {
+            hashHaystack = (hashHaystack * baseNum -
+                    charToIntVale(haystack.charAt(index - 1)) * aL
+                    + charToIntVale(haystack.charAt(index + l - 1))) % module;
+            if (hashHaystack == hashNeedle) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
+
     @Test
     public void test0() {
-        String needle = "ACTGPACY"; // -1 ,0 ,0,0,0,0,1,2
+        String needle = ""; // -1 ,0 ,0,0,0,0,1,2
         System.out.println(JSONObject.toJSONString(getNext(needle)));
     }
 
+
     @Test
     public void test() {
-        int result = strStr2("mississippi", "issip"); //4
-        System.out.println("result= " + result);
+        String haystack = "mississippi";
+        String needle = "mississippi";
+        System.out.println(strStr3(haystack, needle));
     }
+
 
 }
