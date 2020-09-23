@@ -165,8 +165,8 @@ public class A28_StrStrImplement {
             return 0;
         }
         int[] next = getNext(needle);
-        int i = 0;
-        int j = 0;
+        int i = 0; //源字符index
+        int j = 0; //被查找串index
         while (i < haystack.length() && j < needle.length()) {
             if (haystack.charAt(i) == needle.charAt(j)) {
                 i++;
@@ -265,18 +265,174 @@ public class A28_StrStrImplement {
     }
 
 
-    @Test
-    public void test0() {
-        String needle = ""; // -1 ,0 ,0,0,0,0,1,2
-        System.out.println(JSONObject.toJSONString(getNext(needle)));
+    /**
+     * ----Boyer Moore--------
+     **/
+
+    /**
+     * 生成坏字符查找表
+     *
+     * @param pattern
+     * @return
+     */
+    public int[] generateBadWordsLookForTables(String pattern) {
+        int[] data = new int[256];
+        for (int i = 0; i < 255; i++) {
+            data[i] = -1;
+        }
+        for (int i = 0; i < pattern.length(); i++) {
+            int v = pattern.charAt(i);
+            data[v] = i;
+        }
+        return data;
+    }
+
+
+    public int[] generateSuffix(String pattern) {
+        int patternLength = pattern.length();
+        int[] suffix = new int[patternLength]; //value为前缀出现位置
+        for (int i = 0; i < patternLength; i++) {
+            suffix[i] = -1;
+        }
+        for (int i = 0; i < patternLength - 1; i++) {
+            int j = i;
+            int k = 0; //长度
+            while (j >= 0 && pattern.charAt(j) == pattern.charAt(patternLength - 1 - k)) {
+                j--;
+                k++;
+                suffix[k] = j + 1;
+            }
+        }
+        return suffix;
+    }
+
+
+    public int moveByGoodStr(int j, int patternLength, int[] suffix) {
+        int k = patternLength - 1 - j; //好后缀的长度
+        if (suffix[k] != -1) {
+            //在前面匹配到了好后缀
+            return j - suffix[k] + 1;
+        }
+        //没匹配到，从j+2开始往后看能不能匹配到好后缀
+        for (int r = j + 2; r <= patternLength - 1; r++) {
+            if (suffix[patternLength - r] == 0) {
+                return r;
+            }
+        }
+        return patternLength;
+    }
+
+    /**
+     * 方法主体
+     *
+     * @param main
+     * @param pattern
+     * @return
+     */
+    public int strStr4(String main, String pattern) {
+        if (main.length() < pattern.length()) {
+            return -1;
+        }
+        if ("".equals(main) && "".equals(pattern)) {
+            return 0;
+        }
+        if (main.length() < 1) {
+            return -1;
+        }
+        if (pattern.length() < 1) {
+            return 0;
+        }
+        int mainLength = main.length();
+        int patternLength = pattern.length();
+        int[] badWordsTable = generateBadWordsLookForTables(pattern);
+        int[] suffix = generateSuffix(pattern); //value为前缀出现位置
+
+        int i = 0; //目前匹配的头部index
+        while (i <= mainLength - patternLength) {
+            int indexPattern;
+            for (indexPattern = patternLength - 1; indexPattern >= 0; indexPattern--) {
+                //从后往前匹配
+                if (main.charAt(i + indexPattern) != pattern.charAt(indexPattern)) {
+                    break;
+                }
+            }
+            if (indexPattern < 0) {
+                //匹配成功
+                return i;
+            }
+            int badMove = indexPattern - badWordsTable[main.charAt(i + indexPattern)];
+            int goodMove = 0;
+            if (indexPattern < patternLength - 1) {
+                goodMove = moveByGoodStr(indexPattern, patternLength, suffix);
+            }
+            i = i + Math.max(badMove, goodMove);
+        }
+        return -1;
+    }
+
+
+    /**Sunday 算法-----------**/
+    /**
+     * 计算偏移表
+     *
+     * @param pattern
+     * @return
+     */
+    int[] generateShiftTable(String pattern) {
+        int[] data = new int[256];
+        int patternLength = pattern.length();
+        for (int i = 0; i < 255; i++) {
+            data[i] = patternLength + 1;
+        }
+        for (int i = 0; i < patternLength; i++) {
+            int v = pattern.charAt(i);
+            data[v] = patternLength - i;
+        }
+        return data;
+    }
+
+
+    public int strStr5(String main, String pattern) {
+        if (main.length() < pattern.length()) {
+            return -1;
+        }
+        if ("".equals(main) && "".equals(pattern)) {
+            return 0;
+        }
+        if (main.length() < 1) {
+            return -1;
+        }
+        if (pattern.length() < 1) {
+            return 0;
+        }
+        int[] shiftData = generateShiftTable(pattern);
+        int index = 0;
+        while (index + pattern.length() <= main.length()) {
+            String mainTemp = main.substring(index, index + pattern.length());
+            if (mainTemp.equals(pattern)) {
+                return index;
+            }
+            if (index + pattern.length() >= main.length()) {
+                return -1;
+            }
+            //根据偏移表偏移
+            char r = main.charAt(index + pattern.length());
+            index += shiftData[r];
+        }
+        return index + pattern.length() >= main.length() ? -1 : index;
     }
 
 
     @Test
     public void test() {
-        String haystack = "mississippi";
-        String needle = "mississippi";
-        System.out.println(strStr3(haystack, needle));
+        String haystack = "hello";
+        String needle = "ll";
+        System.out.println(strStr5(haystack, needle));
+    }
+
+    @Test
+    public void test0() {
+        System.out.println(JSONObject.toJSONString(generateSuffix("bba")));
     }
 
 
