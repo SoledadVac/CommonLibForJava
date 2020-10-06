@@ -49,7 +49,7 @@ public class A700_SearchinaBinarySearchTree {
 
     @Test
     public void test() {
-        //这个题太简单了，不写测试用例了。直接拿上去跑了下通过了
+        //这个太简单了，不写测试用例了。直接拿上去跑了下通过了
 
     }
 }
