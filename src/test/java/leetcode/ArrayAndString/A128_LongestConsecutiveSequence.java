@@ -46,13 +46,11 @@ public class A128_LongestConsecutiveSequence {
 
     public int longestConsecutive(int[] nums) {
         //放置结点深度
-        int[] rank = new int[nums.length];
         int maxLength = 0;
         HashMap<Integer, Integer> datas = new HashMap<>();  // 值 ：index
         //初始化设置
         for (int i = 0; i < nums.length; i++) {
             datas.put(nums[i], i);
-            rank[i] = 1;
         }
         //计算每个值的层级
         for (int i = 0; i < nums.length; i++) {
@@ -63,9 +61,8 @@ public class A128_LongestConsecutiveSequence {
                 v++;
                 r++;
             }
-            rank[i] = r;
-            if (rank[i] > maxLength) {
-                maxLength = rank[i];
+            if (r > maxLength) {
+                maxLength = r;
             }
         }
         return maxLength;
