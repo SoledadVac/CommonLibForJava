@@ -38,7 +38,7 @@ import java.util.Stack;
  * \
  */
 public class A1047_RemoveAllAdjacentDuplicatesInString {
-    public String removeDuplicates(String S) {
+    public String removeDuplicates0(String S) {
         StringBuilder result = new StringBuilder();
         if (S.length() == 0) {
             return result.toString();
@@ -57,6 +57,25 @@ public class A1047_RemoveAllAdjacentDuplicatesInString {
         }
         while (!queue.isEmpty()) {
             result.append(queue.removeLast());
+        }
+        return result.toString();
+    }
+
+    public String removeDuplicates(String S) {
+        StringBuilder result = new StringBuilder();
+        if (S.length() == 0) {
+            return result.toString();
+        }
+        for (int i = 0; i < S.length(); i++) {
+            if (result.length() == 0) {
+                result.append(S.charAt(i));
+                continue;
+            }
+            if (result.charAt(result.length() - 1) == (S.charAt(i))) {
+                result.deleteCharAt(result.length() - 1);
+            } else {
+                result.append(S.charAt(i));
+            }
         }
         return result.toString();
     }
