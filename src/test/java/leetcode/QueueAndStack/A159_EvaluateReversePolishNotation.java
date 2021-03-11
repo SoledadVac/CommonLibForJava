@@ -42,7 +42,7 @@ import java.util.Stack;
  * = 22
  */
 public class A159_EvaluateReversePolishNotation {
-    public int evalRPN(String[] tokens) {
+    public int evalRPN0(String[] tokens) {
         Stack<Integer> stack = new Stack<>();
         for (int i = 0; i < tokens.length; i++) {
             switch (tokens[i]) {
@@ -78,6 +78,31 @@ public class A159_EvaluateReversePolishNotation {
 
         return stack.pop();
 
+    }
+
+    public int evalRPN(String[] tokens) {
+        int[] stack = new int[tokens.length];
+        int top = -1;//顶部指针
+        for (int i = 0; i < tokens.length; i++) {
+            switch (tokens[i]) {
+                case "+":
+                    stack[--top] += stack[top + 1];
+                    break;
+                case "-":
+                    stack[--top] -= stack[top + 1];
+                    break;
+                case "*":
+                    stack[--top] *= stack[top + 1];
+                    break;
+                case "/":
+                    stack[--top] /= stack[top + 1];
+                    break;
+                default:
+                    stack[++top] = Integer.parseInt(tokens[i]);
+                    break;
+            }
+        }
+        return stack[top];
     }
 
 
