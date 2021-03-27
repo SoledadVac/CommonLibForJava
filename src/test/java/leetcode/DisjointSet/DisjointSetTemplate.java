@@ -1,5 +1,8 @@
 package leetcode.DisjointSet;
 
+import com.alibaba.fastjson.JSONObject;
+import org.junit.Test;
+
 /**
  * \* Created: liuhuichao
  * \* Date: 2021/3/5
@@ -10,9 +13,9 @@ package leetcode.DisjointSet;
 public class DisjointSetTemplate {
 
     //原始数据
-    private int[] data;
+    public int[] data;
     //记录每个根结点对应的树的深度
-    private int[] rank;
+    public int[] rank;
 
     /**
      * 初始化数据结构
@@ -96,5 +99,16 @@ public class DisjointSetTemplate {
             }
             data[r2] = r1;
         }
+    }
+
+    @Test
+    public void test() {
+        //初始化测试数据
+        data = new int[]{0, 0, 1, 4, 4};
+        for (int i = 0; i < data.length; i++) {
+            //为每个人查找亲戚链条中的始祖
+            data[i] = find0(i);
+        }
+        System.out.println(JSONObject.toJSONString(data));
     }
 }
