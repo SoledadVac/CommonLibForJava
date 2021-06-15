@@ -10,6 +10,7 @@ import org.junit.Test;
  * \
  */
 public class A852_PeakIndexInAMountainArray {
+
     public int peakIndexInMountainArray(int[] arr) {
         int left = 0;
         int right = left + 2;
@@ -30,9 +31,33 @@ public class A852_PeakIndexInAMountainArray {
         return -1;
     }
 
+    public int peakIndexInMountainArray1(int[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] < arr[i - 1]) {
+                return i - 1;
+            }
+        }
+        return -1;
+    }
+
+
+    public int peakIndexInMountainArray2(int[] arr) {
+        int left = 0;
+        int right = arr.length - 1;
+        while (left + 1 < right) {
+            int mid = (right - left) / 2 + left;
+            if (arr[mid] > arr[mid - 1]) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+        return left;
+    }
+
     @Test
     public void test() {
-        int[] arr = {24,69,100,99,79,78,67,36,26,19};
-        System.out.println(peakIndexInMountainArray(arr));
+        int[] arr = {24, 69, 100, 99, 79, 78, 67, 36, 26, 19};
+        System.out.println(peakIndexInMountainArray2(arr));
     }
 }
