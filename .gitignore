@@ -24,3 +24,5 @@
 /nbdist/
 /.nb-gradle/
 .gitignore
+src/main/java/com/common/lib/demo/test/twoonecentury/*
+*.icc
