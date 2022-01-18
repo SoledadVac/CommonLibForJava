@@ -32,7 +32,7 @@ public class JsoupGetIp {
     public void test() throws InterruptedException {
         //1.想http代理地址api发起请求，获得想要的代理ip地址
        // final List<AgencyIp> ipList = getForeignIp();
-        String visitUrl = "https://www.jianshu.com/p/07557ca424b0"; //渣渣网站随便刷
+        String visitUrl = "https://www.jianshu.com/asimov/notes/ce147bf27b14/mark_viewed"; //渣渣网站随便刷
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
         for (long i = 0; i < doGetNum; i++) {
             executorService.execute(() -> {

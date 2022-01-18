@@ -10,6 +10,15 @@ package com.common.lib.demo.algorithm.array;
  */
 public class BinarySearchDemo {
 
+    public static int earch1(int[] nums, int target) {
+        for (int index = 0; index < nums.length; index++) {
+            if (nums[index] == target) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
     /**
      * 关键属性:
      * * 二分查找的最基础和最基本的形式。

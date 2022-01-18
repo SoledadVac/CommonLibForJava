@@ -72,10 +72,11 @@ public class A78_Subsets {
      */
     public List<List<Integer>> subsets1(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
-        int length = 1 << nums.length;
+        int length = 1 << nums.length; //子集的总个数
         for (int i = 0; i < length; i++) {
             List<Integer> list = new ArrayList<>();
             for (int j = 0; j < nums.length; j++) {
+                //如果当前的i值的二进制位跟当前数组所在 nums 的index相与不为1，则说明当前num[j]在此子集中
                 if (((1 << j) & i) != 0) {
                     list.add(nums[j]);
                 }

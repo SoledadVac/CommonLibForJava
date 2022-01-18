@@ -70,14 +70,14 @@ public class BitManipulationClass {
         if (num == 0) {
             return "0";
         }
-        String code = "";
+        StringBuilder code = new StringBuilder();
         String hex = "0123456789abcdef";
         for (int i = 7; i >= 0; i--) {
             int move = 4 * i;
             int val = num >> (move) & 0xf;
-            code += hex.charAt(val);
+            code.append(hex.charAt(val));
         }
-        return code.replaceFirst("^0*", "");
+        return code.toString().replaceFirst("^0*", "");
     }
 
     /**
@@ -156,10 +156,16 @@ public class BitManipulationClass {
        /* char c = 'A';
         System.out.println(changeWordToOtherCase(c));*/
 
-        BitSet bitSet = new BitSet(4);
+       /* BitSet bitSet = new BitSet(4);
         byte[] bytes = new byte[]{1, 3, 4};
         System.out.println("bitSet: " + bitSet);
         bitSet = BitSet.valueOf(bytes);
-        System.out.println("bitSet: " + bitSet);
+        System.out.println("bitSet: " + bitSet);*/
+
+        int num = -1;
+        int[] result = consoleIntegerByte(num);
+        System.out.println(JSONObject.toJSONString(result));
+
+
     }
 }

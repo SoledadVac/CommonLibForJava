@@ -261,7 +261,7 @@ public class ArrayTest {
             if (step == 0) {
                 //向右=0
                 result.add(matrix[x0][y0]);
-                if(y0==x0){
+                if (y0 == x0) {
                     x2++;
 
                 }
@@ -299,5 +299,17 @@ public class ArrayTest {
     }
 
 
+    public char[] reverseString(char[] source) {
+        int pLeft = 0;
+        int pRight = source.length - 1;
+        while (pLeft <= pRight) {
+            char temp = source[pLeft];
+            source[pLeft] = source[pRight];
+            source[pRight] = temp;
+            pLeft++;
+            pRight--;
+        }
+        return source;
+    }
 
 }

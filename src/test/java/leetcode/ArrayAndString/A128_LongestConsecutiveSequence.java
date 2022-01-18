@@ -55,8 +55,8 @@ public class A128_LongestConsecutiveSequence {
         //计算每个值的层级
         for (int i = 0; i < nums.length; i++) {
             //以当前值为起始值，往下加1，直到加到某个值不存在时候停止，记录下此时累加的长度
-            int v = nums[i] + 1;
-            int r = 1;
+            int v = nums[i] + 1;  //当前查找值
+            int r = 1;  //深度
             while (datas.contains(v)) {
                 v++;
                 r++;

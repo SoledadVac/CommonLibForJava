@@ -150,8 +150,8 @@ public class A707_DesignLinkedList2 {
 
     class Node {
         int val;
-        Node prev;
-        Node next;
+        Node prev; //前置节点
+        Node next; //后置节点
 
         Node(int val) {
             this.val = val;

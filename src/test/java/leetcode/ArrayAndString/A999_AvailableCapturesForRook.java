@@ -109,5 +109,6 @@ public class A999_AvailableCapturesForRook {
                 {'.', '.', '.', '.', '.', '.', '.', '.'},
                 {'.', '.', '.', '.', '.', '.', '.', '.'}}; // 3
         System.out.println(numRookCaptures(board));
+
     }
 }

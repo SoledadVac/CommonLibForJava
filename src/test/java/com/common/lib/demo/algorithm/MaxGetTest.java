@@ -24,9 +24,9 @@ public class MaxGetTest {
     }
 
     @Test
-    public void reverseArrayTest(){
-        int[] source={1,2};
-        System.out.println(Arrays.toString(reverseArray(source)));
+    public void reverseArrayTest() {
+       /* int[] source={1,2};
+        System.out.println(Arrays.toString(reverseArray(source)));*/
     }
 
     /**

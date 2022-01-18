@@ -52,6 +52,7 @@ public class A27_RemoveElement {
 
     /**
      * ps:我觉得的这个指针的很有意思
+     *
      * @param nums
      * @param val
      * @return
@@ -66,6 +67,21 @@ public class A27_RemoveElement {
         }
         return index;
     }
+
+
+    public int removeElement1(int[] nums, int val) {
+        int fast = 0;
+        int slow = 0;
+        while (fast <= nums.length - 1) {
+            if (nums[fast] != val) {
+                nums[slow] = nums[fast];
+                slow++;
+            }
+            fast++;
+        }
+        return slow;
+    }
+
 
     @Test
     public void test() {

@@ -1,4 +1,4 @@
-package com.common.lib.demo.algorithm;
+package com.common.lib.demo.algorithm.queue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class MyQueue {
      * Delete an element from the queue. Return true if the operation is successful.
      */
     public boolean deQueue() {
-        if (isEmpty() == true) {
+        if (isEmpty()) {
             return false;
         }
         pointer++;

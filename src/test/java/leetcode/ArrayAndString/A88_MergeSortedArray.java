@@ -91,13 +91,43 @@ public class A88_MergeSortedArray {
 
     }
 
+
+    /**
+     * 将 nums2 合并到 nums1 中，使 nums1 成为一个有序数组
+     *
+     * @param nums1
+     * @param m     : nums1实际长度
+     * @param nums2
+     * @param n     : nums2实际长度
+     */
+    public void merge1(int[] nums1, int m, int[] nums2, int n) {
+        int[] num1Copy = new int[m + n]; //用于存放nums1原始数据
+        System.arraycopy(nums1, 0, num1Copy, 0, m);
+        int p1 = 0; //num1Copy 指针
+        int p2 = 0; //nums2 指针
+        int p = 0;//nums1 指针
+        while (p1 < m && p2 < n) {
+            if (num1Copy[p1] > nums2[p2]) {
+                nums1[p++] = nums2[p2++];
+            } else {
+                nums1[p++] = num1Copy[p1++];
+            }
+        }
+        if (p1 < m) {
+            System.arraycopy(num1Copy, p1, nums1, p, m - p1);
+        }
+        if (p2 < n) {
+            System.arraycopy(nums2, p2, nums1, p, n - p2);
+        }
+    }
+
     @Test
     public void test() {
-        int[] nums1 = {2, 0};
-        int m = 1;
-        int[] nums2 = {1};
-        int n = 1;
-        merge(nums1, m, nums2, n);
+        int[] nums1 = {1, 2, 3, 0, 0, 0};
+        int m = 3;
+        int[] nums2 = {5, 6, 7};
+        int n = 3;
+        merge1(nums1, m, nums2, n);
         System.out.println(JSONObject.toJSON(nums1));
     }
 

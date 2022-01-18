@@ -3,6 +3,7 @@ package com.common.lib.demo.concurrent.thread;
 import com.alibaba.fastjson.JSONObject;
 import com.common.lib.demo.concurrent.Person;
 import org.junit.Test;
+import sun.misc.Unsafe;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -22,6 +23,7 @@ public class AtomicClassTest {
 
     @Test
     public void atomicIntegerTest() throws Exception {
+
         AtomicInteger intA = new AtomicInteger(0);
         CountDownLatch countDownLatch = new CountDownLatch(1000);
         for (int i = 0; i < 1000; i++) {

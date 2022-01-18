@@ -1,9 +1,11 @@
-package leetcode;
+package leetcode.OrderedMap;
 
+import com.alibaba.fastjson.JSONObject;
+import com.common.lib.demo.Student;
+import com.google.gson.JsonObject;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -75,6 +77,72 @@ public class A855_ExamRoom {
     @Test
     public void test() {
 
+
+
     }
+
+    public static void main(String[] args) {
+       /* List<Student> list = new ArrayList<>();
+        Student s1 = new Student();
+        s1.setId(1);
+        s1.setCheck(false);
+        Student s2 = new Student();
+        s2.setId(2);
+        s2.setCheck(false);
+        Student s3 = new Student();
+        s3.setId(3);
+        s3.setCheck(true);
+        Student s4 = new Student();
+        s4.setId(4);
+        s4.setCheck(false);
+        list.add(s1);
+        list.add(s2);
+        list.add(s3);
+        list.add(s4);
+        list.sort((c1, c2) -> {
+            if (c1.getCheck()) {
+                return -1;
+            }
+            if (c2.getCheck()) {
+                return -1;
+            }
+            return 0;
+        });
+        System.out.println(JSONObject.toJSONString(list));*/
+
+        List<Student> list = new ArrayList<>();
+        Student s1 = new Student();
+        s1.setId(1);
+        s1.setCheck(false);
+        Student s2 = new Student();
+        s2.setId(2);
+        s2.setCheck(false);
+        Student s3 = new Student();
+        s3.setId(3);
+        s3.setCheck(true);
+        Student s4 = new Student();
+        s4.setId(4);
+        s4.setCheck(false);
+        list.add(s1);
+        list.add(s2);
+        list.add(s3);
+        list.add(s4);
+        list.sort(Comparator.comparingInt(c -> c.getCheck().hashCode()));
+        System.out.println(JSONObject.toJSONString(list));
+    }
+
+    /*public class Student {
+        public Integer id;
+        public Boolean check;
+
+        Student() {
+        }
+
+        Student(Integer id, Boolean check) {
+            this.id = id;
+            this.check = check;
+        }
+    }*/
+
 
 }

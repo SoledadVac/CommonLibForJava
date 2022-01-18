@@ -31,13 +31,13 @@ public class A622_DesignCircularQueue {
 
     class MyCircularQueue {
 
-        private Integer[] data;
-        private Integer size;
-        private Integer head = -1;
-        private Integer tail = -1;
+        private Integer[] data; //队列数据
+        private Integer size;   //队列大小
+        private Integer head = -1; //头指针
+        private Integer tail = -1; //尾指针
 
         /**
-         * Initialize your data structure here. Set the size of the queue to be k.
+         * 初始化队列
          */
         public MyCircularQueue(int k) {
             this.data = new Integer[k];
@@ -45,7 +45,7 @@ public class A622_DesignCircularQueue {
         }
 
         /**
-         * Insert an element into the circular queue. Return true if the operation is successful.
+         * 入队操作
          */
         public boolean enQueue(int value) {
             if (isFull()) {
@@ -60,7 +60,7 @@ public class A622_DesignCircularQueue {
         }
 
         /**
-         * Delete an element from the circular queue. Return true if the operation is successful.
+         * 出队操作
          */
         public boolean deQueue() {
             if (isEmpty()) {
@@ -77,7 +77,7 @@ public class A622_DesignCircularQueue {
         }
 
         /**
-         * Get the front item from the queue.
+         * 获取队首元素
          */
         public int Front() {
             if (isEmpty()) {
@@ -87,7 +87,7 @@ public class A622_DesignCircularQueue {
         }
 
         /**
-         * Get the last item from the queue.
+         * 获取队尾元素
          */
         public int Rear() {
             if (isEmpty()) {
@@ -97,14 +97,14 @@ public class A622_DesignCircularQueue {
         }
 
         /**
-         * Checks whether the circular queue is empty or not.
+         * 判断队列是不是为空
          */
         public boolean isEmpty() {
             return tail == -1 && head == -1;
         }
 
         /**
-         * Checks whether the circular queue is full or not.
+         * 检查队列是不是已经满了
          */
         public boolean isFull() {
             return (tail % size - head) == size - 1 || (head - tail % size) == 1;
