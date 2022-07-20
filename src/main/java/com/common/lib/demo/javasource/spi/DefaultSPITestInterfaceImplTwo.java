@@ -1,4 +1,4 @@
-package com.common.lib.demo.javasource;
+package com.common.lib.demo.javasource.spi;
 
 /**
  * \* Created: liuhuichao
