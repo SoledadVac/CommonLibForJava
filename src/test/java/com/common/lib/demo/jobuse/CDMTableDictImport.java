@@ -20,9 +20,7 @@ import java.util.stream.Collectors;
 public class CDMTableDictImport {
 
     ExcelUtil excelUtil = new ExcelUtil();
-    private List<String> hospitalCodeList = Lists.newArrayList("234", "001");
-    private String folderPath = "/Users/liuhuichao/JavaProj/1Yong/CDMTableList";
-    private String folderTableSummaryPath = "/Users/liuhuichao/JavaProj/1Yong/CDMTableList/表单目录.xlsx";
+    private String folderTableSummaryPath = "/Users/liuhuichao/Downloads/字段字典说明(一院多区)-20220729.xlsx";
 
 
     @Test
@@ -31,119 +29,97 @@ public class CDMTableDictImport {
         //输出表单目录insert sql
         // System.out.println(getTableInfo().stream().collect(Collectors.joining(";")));
         //System.out.println(JSONObject.toJSONString(getAllFilePath()));
-        System.out.println(getTableInfoDetail().stream().collect(Collectors.joining(";")));
-        ;
+        Map<String, ArrayList<Map<String, String>>> resultMap = excelUtil.readAllSheetExcelToObj(folderTableSummaryPath);
+        //表单目录
+        List<String> tableListSql = new LinkedList<>();
+        ArrayList<Map<String, String>> tableList = resultMap.get("表单目录");
+        for (Map<String, String> item : tableList) {
+            tableListSql.add(buildTableInfoInsertSql(item));
+        }
+        //表单数据
+        List<String> tableDetailListSql = new LinkedList<>();
+        for (String sheetName : resultMap.keySet()) {
+            if ("表单目录".equals(sheetName)) {
+                continue;
+            }
+            String tableCode = sheetName;
+            ArrayList<Map<String, String>> tableDetailList = resultMap.get(tableCode);
+            for (Map<String, String> item : tableDetailList) {
+                tableDetailListSql.add(buildTableDetailInsertSql(tableCode, item));
+            }
+        }
+        //System.out.println(tableListSql.stream().collect(Collectors.joining(";")));
+        //System.out.println(tableDetailListSql.stream().collect(Collectors.joining(";")));
+        List<String> result = new LinkedList<>();
+        //result.addAll(tableListSql);
+        result.addAll(tableDetailListSql);
+        String insertSql = result.stream().collect(Collectors.joining(";"));
+        writeToFile(
+                insertSql, "/Users/liuhuichao/Downloads/insertSql.txt"
+        );
+
+
     }
 
-    /**
-     * 获取表数据
-     *
-     * @return
-     */
-    public List<String> getTableInfo() {
-        List<String> result = new ArrayList<>();
+    public void writeToFile(String str, String path) {
+        FileWriter writer;
+        try {
+            writer = new FileWriter(path);
+            writer.write(str);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String buildTableInfoInsertSql(Map<String, String> item) {
+        String sql = "";
         List<String> targetNames = new ArrayList<>();
-        targetNames.add("hospital_code");
         targetNames.add("table_category_code");
         targetNames.add("table_category_name");
-        targetNames.add("table_code");
-        targetNames.add("table_name");
+        targetNames.add("field_num");
         targetNames.add("source_system");
-        targetNames.add("in_use");
-        targetNames.add("remark");
-        ArrayList<Map<String, String>> excelList = excelUtil.readExcelToObj(folderTableSummaryPath);
-        for (String hospitalCode : hospitalCodeList) {
-            for (Map<String, String> lineData : excelList) {
-                List<String> values = Lists.newArrayList();
-                values.add(hospitalCode);//hospital_code
-                values.add(lineData.get("0"));//table_category_code
-                values.add(lineData.get("1"));//table_category_name
-                values.add(lineData.get("2")); //table_code
-                values.add(lineData.get("3")); //table_name
-                values.add(lineData.get("4").replace("\\", "\\\\")); //source_system
-                values.add("1"); //in_use
-                values.add(lineData.get("6")); //remark
-                String makeInsert = makeInsertToTableSql("yydi_gateway.table_dict", targetNames, values);
-                result.add(makeInsert);
-            }
-        }
-        return result;
+        targetNames.add("source_info");
+        List<String> values = Lists.newArrayList();
+        values.add(item.get("2"));
+        values.add(item.get("3"));
+        values.add(item.get("4"));
+        values.add(item.get("5"));
+        values.add(item.get("6"));
+        sql = makeInsertToTableSql("yydi_gateway.table_dict", targetNames, values);
+        return sql;
     }
 
-
-    /**
-     * 获取表详细的数据
-     *
-     * @return
-     */
-    public List<String> getTableInfoDetails(String tableCode, String path) {
-        List<String> result = new ArrayList<>();
+    public String buildTableDetailInsertSql(String tableCode, Map<String, String> item) {
+        String sql = "";
         List<String> targetNames = new ArrayList<>();
-        targetNames.add("`table_code`");
-        targetNames.add("`field`");
-        targetNames.add("`comment`");
-        targetNames.add("`example`");
-        targetNames.add("`explain`");
-        targetNames.add("`type`");
-        targetNames.add("`type_define`");
-        targetNames.add("`required`");
-        ArrayList<Map<String, String>> excelList = excelUtil.readExcelToObj(path);
-        for (Map<String, String> lineData : excelList) {
-            List<String> values = Lists.newArrayList();
-            values.add(tableCode);//table_code
-            if (StringUtils.isEmpty(lineData.get("0"))) {
-                continue;
-            }
-            values.add(lineData.get("0"));//field
-            values.add(lineData.get("1"));//comment
-            values.add(lineData.get("2"));//example
-            values.add(lineData.get("3"));//explain
-            values.add(lineData.get("4"));//type
-            values.add(lineData.get("5"));//type_define
-            String reqStr = lineData.get("6");
-            if (StringUtils.isEmpty(reqStr)) {
-                reqStr = "";
-            }
-            values.add(reqStr.contains("是") ? "1" : "0");//required
-            String makeInsert = makeInsertToTableSql("yydi_gateway.table_dict_detail", targetNames, values);
-            result.add(makeInsert);
-        }
-        return result;
+        targetNames.add("table_code");
+        targetNames.add("field_name");
+        targetNames.add("field_cn_name");
+        targetNames.add("example");
+        targetNames.add("comment");
+        targetNames.add("ref_dict");
+        targetNames.add("dict_source");
+        targetNames.add("type_define");
+        targetNames.add("pk_mark");
+        targetNames.add("required");
+        List<String> values = Lists.newArrayList();
+        values.add(tableCode);
+        values.add(item.get("0"));
+        values.add(item.get("1"));
+        values.add(item.get("2"));
+        values.add(item.get("3"));
+        values.add(item.get("4"));
+        values.add(item.get("5"));
+        values.add(item.get("6"));
+        values.add(item.get("7"));
+        values.add(item.get("8"));
+        values.add(item.get("9"));
+        sql = makeInsertToTableSql("yydi_gateway.table_dict_detail", targetNames, values);
+        return sql;
     }
 
-
-    /**
-     * 获取表的详细数据
-     *
-     * @return
-     */
-    public List<String> getTableInfoDetail() {
-        List<String> result = new LinkedList<>(); // key : tableCode; value : sql
-        Map<String, String> codePathMap = getAllFilePath();
-        for (String tableCode : codePathMap.keySet()) {
-            List<String> tableSql = getTableInfoDetails(tableCode, codePathMap.get(tableCode));
-            result.addAll(tableSql);
-        }
-        return result;
-    }
-
-
-    public Map<String, String> getAllFilePath() {
-        Map<String, String> result = new HashMap<>(); // // key : tableCode; value : abs path
-        File parentFolder = new File(folderPath);
-        File[] files = parentFolder.listFiles();
-        for (File file : files) {
-            if (file.getName().contains("表单目录")) {
-                continue;
-            }
-            String tableCode = file.getName().substring(0, file.getName().indexOf("."));
-            if (StringUtils.isEmpty(tableCode)) {
-                continue;
-            }
-            result.put(tableCode, file.getAbsolutePath());
-        }
-        return result;
-    }
 
     public static String makeInsertToTableSql(String tableName, Collection<String> names, List<String> values) {
         StringBuilder sql = (new StringBuilder()).append("insert into ").append(tableName).append("(");
@@ -154,8 +130,9 @@ public class CDMTableDictImport {
             if (nameCount > 0) {
                 sql.append(",");
             }
-
+            sql.append("`");
             sql.append(name);
+            sql.append("`");
         }
 
         sql.append(") values (");
@@ -164,13 +141,18 @@ public class CDMTableDictImport {
             if (i != 0) {
                 sql.append(",");
             }
-
-            sql.append("'" + values.get(i) + "'");
+            String v = values.get(i);
+            if (StringUtils.isEmpty(v)) {
+                v = "";
+            }
+            v = v.replaceAll("'", "\\\\'");
+            sql.append("'" + v.replaceAll("/n|/t", "") + "'");
         }
 
         sql.append(")");
         return sql.toString();
     }
+
 
 
 }

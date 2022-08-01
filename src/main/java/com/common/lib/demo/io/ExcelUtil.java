@@ -46,6 +46,27 @@ public class ExcelUtil {
     }
 
     /**
+     * 读取excel数据
+     *
+     * @param path
+     */
+    public Map<String, ArrayList<Map<String, String>>> readAllSheetExcelToObj(String path) {
+        Workbook wb = null;
+        Map<String, ArrayList<Map<String, String>>> resultMap = new HashMap<>();
+        try {
+            wb = WorkbookFactory.create(new File(path));
+            int sheetNum = wb.getNumberOfSheets();
+            for (int index = 0; index < sheetNum; index++) {
+                ArrayList<Map<String, String>> result = readExcel(wb, index, 1, 0);
+                resultMap.put(wb.getSheetAt(index).getSheetName(), result);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultMap;
+    }
+
+    /**
      * 读取excel文件
      *
      * @param wb
@@ -60,6 +81,10 @@ public class ExcelUtil {
         try {
             for (int i = startReadLine; i < sheet.getLastRowNum() - tailLine + 1; i++) {
                 row = sheet.getRow(i);
+                if (row == null) {
+                    //有空行就不往下读了
+                    break;
+                }
                 Map<String, String> map = new HashMap<String, String>();
                 int cellNum = row.getPhysicalNumberOfCells();
                 for (int cellInex = 0; cellInex < cellNum; cellInex++) {
@@ -77,11 +102,14 @@ public class ExcelUtil {
                         if (c.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
                             // 数字
                             returnStr = String.valueOf((int) c.getNumericCellValue());
+                        } else if (c.getCellType() == HSSFCell.CELL_TYPE_BOOLEAN) {
+                            // 数字
+                            returnStr = Boolean.toString(c.getBooleanCellValue());
                         } else {
                             returnStr = c.getRichStringCellValue().getString();
                         }
                     }
-                    map.put(String.valueOf(cellInex), returnStr);
+                    map.put(String.valueOf(cellInex), returnStr.toString());
                 }
                 result.add(map);
             }
