@@ -45,6 +45,9 @@ public class CDMTableDictImport {
             String tableCode = sheetName;
             ArrayList<Map<String, String>> tableDetailList = resultMap.get(tableCode);
             for (Map<String, String> item : tableDetailList) {
+                if (StringUtils.isEmpty(item.get("0"))) {
+                    continue;
+                }
                 tableDetailListSql.add(buildTableDetailInsertSql(tableCode, item));
             }
         }
@@ -152,7 +155,6 @@ public class CDMTableDictImport {
         sql.append(")");
         return sql.toString();
     }
-
 
 
 }
