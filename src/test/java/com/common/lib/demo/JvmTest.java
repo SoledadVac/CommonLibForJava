@@ -1,6 +1,6 @@
 package com.common.lib.demo;
 
-import com.alibaba.fastjson.JSONObject;
+
 import org.apache.hadoop.yarn.webapp.hamlet.Hamlet;
 import org.junit.Test;
 
@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 /**
  * \* Created: liuhuichao
@@ -50,17 +51,6 @@ public class JvmTest {
         }
     }
 
-    @Test
-    public void test() {
-        int[] nums = {2, 3, 1, 8, 0};
-        //2,3,1,8,0
-        //-2,3
-        //-1,2,3
-        //-1,2,3,8
-        //-0,1,2,3,8
-        //sort1(nums);
-        System.out.println(JSONObject.toJSON("吃晚饭".getBytes()));
-    }
 
     public String[] findRelativeRanks(int[] score) {
         String[] answers = new String[score.length];
@@ -71,9 +61,27 @@ public class JvmTest {
 
 
     public static void main(String[] args) {
+        int x = 123;
+        //int x = 120;
+        //int x = -120;
+        //int x = 0;
+        System.out.println(reverse(x));
+    }
+
+    public static int reverse(int x) {
+        int devider = 10;
+        int result = 0;
 
 
 
+
+
+
+
+
+
+
+        return result;
     }
 
 
